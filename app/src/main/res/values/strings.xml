@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Intec</string>
+
+    <!-- Log in activity -->
+    <string name="id">Id / Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="enter">iniciar</string>
+
+    <!-- Menu -->
+    <string name="student_process">Procesos estudiantiles</string>
+    <string name="home">Inicio</string>
+    <string name="pre_selection">Preselección</string>
+    <string name="selection">Selección</string>
+    <string name="retire">Retiro</string>
+    <string name="teacher_evaluation">Evaluación profesoral</string>
+    <string name="reports">Reportes</string>
+    <string name="library">Biblioteca</string>
+    <string name="book">Aparta</string>
+    <string name="academic_calendar">Calendario Académico</string>
+    <string name="grades_revision">Revisión de calificaciones</string>
+    <string name="signatures_programs">Programas de asignaturas</string>
+    <string name="academic_offer">Oferta academica</string>
+
+    <!-- Main activity -->
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Home fragment -->
+    <string name="id_text">ID</string>
+    <string name="program">Programa</string>
+    <string name="academic_condition">Condición Academica</string>
+    <string name="quarter">Trimestre de Ingreso</string>
+    <string name="last_condition">Última Condición</string>
+    <string name="quarter_index">Índice Trimestral</string>
+    <string name="general_index">Índice General</string>
+    <string name="validated_credits">Créditos Convalidados</string>
+    <string name="approved_credits">Créditos Aprovados</string>
+    <string name="approved_quarters">Trimestres Cursados</string>
+    <string name="default_field">-</string>
+
+    <string name="alerts">Alertas</string>
+
+
+</resources>
