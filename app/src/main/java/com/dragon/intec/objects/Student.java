@@ -112,7 +112,7 @@ public class Student {
             jsonObject.put("name", information.get(1));
             jsonObject.put("academic_condition", information.get(2));
             jsonObject.put("quarter", information.get(3));
-            jsonObject.put("last_condition", information.get(4));
+            jsonObject.put("las_condition", information.get(4));
             jsonObject.put("quarter_index", information.get(5));
             jsonObject.put("general_index", information.get(6));
             jsonObject.put("validated_credits", information.get(7));
