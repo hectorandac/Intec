@@ -41,6 +41,7 @@
     <string name="default_field">-</string>
 
     <string name="alerts">Alertas</string>
+    <string name="selected_signatures">Asignaturas seleccionadas</string>
 
 
 </resources>

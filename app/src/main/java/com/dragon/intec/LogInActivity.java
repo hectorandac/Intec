@@ -1,23 +1,29 @@
 package com.dragon.intec;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.dragon.intec.objects.Student;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+
 public class LogInActivity extends AppCompatActivity {
+
+    private static final String keyStudent = "STUDENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +35,7 @@ public class LogInActivity extends AppCompatActivity {
     public void logIn(View v) {
         //Shows the loading screen
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.loading_screen);
-        ((ProgressBar) frameLayout.findViewById(R.id.progressBar)).getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);;
+        ((ProgressBar) frameLayout.findViewById(R.id.progressBar)).getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         frameLayout.setVisibility(View.VISIBLE);
 
         //Hides the keyboard
@@ -52,38 +58,38 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     //Authenticates the user
-    public class LogInRequest extends AsyncTask<Object, Void, Void> {
+    public class LogInRequest extends AsyncTask<Object, Void, Student> {
 
         Context context;
 
         @Override
-        protected Void doInBackground(Object... objects) {
+        protected Student doInBackground(Object... objects) {
 
             //Gets user credentials from passed data
             String id = (String) objects[0];
             String password = (String) objects[1];
 
             //May be used to create the request and start next Activity
-            Context context = (Context) objects[2];
-            this.context = context;
+            this.context = (Context) objects[2];
 
             Log.i("Credentials_id", id);
             Log.i("Credentials_pss", password);
 
-            //For debugging purpose
+            Student student = new Student("","", (Activity)objects[2]);
             try {
-                Thread.sleep(2500);
-            } catch (InterruptedException e) {
+                student.getData();
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
 
-            return null;
+            return student;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(Student student) {
+            super.onPostExecute(student);
             Intent intent = new Intent(context, MainActivity.class);
+            intent.putExtra(keyStudent, student);
             startActivity(intent);
             finish();
         }

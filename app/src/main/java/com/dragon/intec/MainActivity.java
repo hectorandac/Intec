@@ -3,17 +3,13 @@ package com.dragon.intec;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -37,24 +33,23 @@ public class MainActivity extends AppCompatActivity
     //Determines the current position of th menu
     int currentPosition = 0;
     //Key attached to the value of the position on view created
-    private static final String key = "POSITION";
-    //List of fragments to display
-    Fragment[] fragments = {new HomeFragment(),
-            new PreselectionFragment(),
-            new SelectionFragment(),
-            new RetireFragment(),
-            new TeacherEvaluationFragment(),
-            new ReportsFragment(),
-            new GradesRevisionFragment(),
-            new SignaturesProgramsFragment(),
-            new AcademicOfferFragment()};
+    private static final String keyPosition = "POSITION";
+    private static final String keyStudent = "STUDENT";
+
+    public Student student;
+
+    public Student getStudent() {
+        return student;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Student student = new Student("","", this);
+        Bundle bundle = getIntent().getExtras();
+        student = bundle.getParcelable(keyStudent);
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -62,7 +57,7 @@ public class MainActivity extends AppCompatActivity
 
         //Check for the last fragment and displays it depending on the past position if any position stored.
         if (savedInstanceState != null){
-            int position = savedInstanceState.getInt(key);
+            int position = savedInstanceState.getInt(keyPosition);
             Log.i("POSITION_reported", String.valueOf(position));
             switch(position) {
                 case 0: f = getFragment(position); break;
@@ -94,6 +89,7 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //noinspection deprecation
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
@@ -102,7 +98,34 @@ public class MainActivity extends AppCompatActivity
     private Fragment getFragment(int position){
         navigationView.getMenu().getItem(position).setChecked(true);
         setMenuItemId(position);
-        return fragments[position];
+
+        Fragment f = null;
+
+        if (position == 0) {
+            f = new HomeFragment();
+        } else if (position == 1){
+            f = new PreselectionFragment();
+        } else if (position == 2){
+            f = new SelectionFragment();
+        } else if (position == 3){
+            f = new RetireFragment();
+        } else if (position == 4){
+            f = new TeacherEvaluationFragment();
+        } else if (position == 5){
+            f = new ReportsFragment();
+        } else if (position == 6){
+            f = new GradesRevisionFragment();
+        } else if (position == 7){
+            f = new SignaturesProgramsFragment();
+        } else if (position == 8){
+            f = new AcademicOfferFragment();
+        } else if (position == 9){
+            f = new BookFragment();
+        } else if (position == 10){
+            f = new CalendarFragment();
+        }
+
+        return f;
     }
 
     @Override
@@ -201,7 +224,7 @@ public class MainActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i("POSITION_transition", String.valueOf(currentPosition));
-        outState.putInt(key, currentPosition);
+        outState.putInt(keyPosition, currentPosition);
     }
 
 }
