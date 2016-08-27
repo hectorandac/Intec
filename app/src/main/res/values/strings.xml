@@ -41,7 +41,19 @@
     <string name="default_field">-</string>
 
     <string name="alerts">Alertas</string>
-    <string name="selected_signatures">Asignaturas seleccionadas</string>
 
+    <string name="selected_signatures">Asignaturas seleccionadas</string>
+    <string name="tab_code">Código</string>
+    <string name="tab_signature">Asignatura</string>
+    <string name="tab_sections">Sec</string>
+    <string name="tab_monday">Lun</string>
+    <string name="tab_tuesday">Ma</string>
+    <string name="tab_wednesday">Mi</string>
+    <string name="tab_thursday">Ju</string>
+    <string name="tab_friday">Vi</string>
+    <string name="tab_saturday">Sa</string>
+    <string name="tab_grades">Calif</string>
+    <string name="tab_teacher">Profesor</string>
+    <string name="tab_evaluation">Eval</string>
 
 </resources>

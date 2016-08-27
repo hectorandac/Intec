@@ -3,9 +3,11 @@ package com.dragon.intec.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -61,5 +63,32 @@ public class HomeFragment extends Fragment {
             textView.setLayoutParams(lp);
             linearLayout.addView(textView);
         }
+
+        String[][] signatures = student.getSignatures().getSignatures();
+        Log.i("ARRAY_signatures", signatures[0][0]);
+        for (String[] signature:signatures) {
+            LinearLayout listSignatures = (LinearLayout) mainView.findViewById(R.id.tab_signatures);
+            LinearLayout listElements = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.signature_layout, null);
+            for (int j = 0; j < listElements.getChildCount(); j++){
+                View v = listElements.getChildAt(j);
+                if (j == 11) {
+                    switch (signature[j]){
+                        case "true":
+                            ((CheckBox) v).setChecked(true);
+                            break;
+                        case "false":
+                            ((CheckBox) v).setChecked(false);
+                            break;
+                    }
+                }
+                else {
+                    ((TextView) v).setText(signature[j]);
+                }
+
+            }
+            listSignatures.addView(listElements);
+        }
+
+
     }
 }

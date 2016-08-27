@@ -40,6 +40,7 @@ public class Student implements Parcelable{
     private int approvedCredits;
     private int approvedQuarters;
     private String[] alerts;
+    private Signatures signatures;
 
     protected Student(Parcel in) {
         token = in.readString();
@@ -56,6 +57,7 @@ public class Student implements Parcelable{
         approvedCredits = in.readInt();
         approvedQuarters = in.readInt();
         alerts = in.createStringArray();
+        signatures = in.readParcelable(Signatures.class.getClassLoader());
         internetConnection = in.readByte() != 0;
     }
 
@@ -70,6 +72,15 @@ public class Student implements Parcelable{
             return new Student[size];
         }
     };
+
+    public Signatures getSignatures() {
+        return signatures;
+    }
+
+     private Student setSignatures(Signatures signatures) {
+        this.signatures = signatures;
+        return this;
+    }
 
     public String getId() {
         return id;
@@ -227,8 +238,18 @@ public class Student implements Parcelable{
             for (int i = 0; i < jsonArray.length(); i++){
                 vals.add(jsonArray.getString(i));
             }
-
             setAlerts(vals.toArray(new String[vals.size()]));
+
+            JSONArray jsonArraySignatures = jsonObject.getJSONArray("signatures");
+            String[][] signatures = new String[jsonArraySignatures.length()][12];
+            for (int i = 0; i < jsonArraySignatures.length(); i++){
+                for (int j = 0; j < 12; j++){
+                    signatures[i][j] = jsonArraySignatures.getJSONArray(i).getString(j);
+                }
+            }
+            setSignatures(new Signatures(signatures));
+            Log.i("USER_signatures", signatures[0][0]);
+
 
         }else{
             //Testing
@@ -255,7 +276,24 @@ public class Student implements Parcelable{
             setValidatedCredits(Integer.parseInt(jsonObject.optString("validated_credits")));
             setApprovedCredits(Integer.parseInt(jsonObject.optString("approved_credits")));
             setApprovedQuarters(Integer.parseInt(jsonObject.optString("approved_quarters")));
-            setAlerts(jsonObject.getJSONArray("alerts").toString().replace("},{", " ,").split(" "));
+
+            ArrayList<String> vals = new ArrayList<>();
+            JSONArray jsonArray = jsonObject.getJSONArray("alerts");
+            for (int i = 0; i < jsonArray.length(); i++){
+                vals.add(jsonArray.getString(i));
+            }
+            setAlerts(vals.toArray(new String[vals.size()]));
+
+            JSONArray jsonArraySignatures = jsonObject.getJSONArray("signatures");
+            String[][] signatures = new String[jsonArraySignatures.length()][12];
+            for (int i = 0; i < jsonArraySignatures.length(); i++){
+                for (int j = 0; j < 12; j++){
+                    signatures[i][j] = jsonArraySignatures.getJSONArray(i).getString(j);
+                    Log.i("USER_signatures", signatures[i][j]);
+                }
+            }
+            setSignatures(new Signatures(signatures));
+
             //Then save it
             saveToJSON(activity);
         }
@@ -326,6 +364,29 @@ public class Student implements Parcelable{
 
             jsonObject.put("alerts", jsonArray);
 
+            JSONArray jsonArray1 = new JSONArray();
+            JSONArray jsonArray2 = new JSONArray();
+
+            jsonArray1.put("CBF201");
+            jsonArray1.put("PROBABILIDAD Y ESTADISTICA");
+            jsonArray1.put("02");
+            jsonArray1.put("AJ404");
+            jsonArray1.put("09/11");
+            jsonArray1.put("");
+            jsonArray1.put("09/11");
+            jsonArray1.put("");
+            jsonArray1.put("14/16");
+            jsonArray1.put("A");
+            jsonArray1.put("JOSE ANTONIO SCOTT GUILLEARD DEL CARMEN SANTO ALFONSO");
+            jsonArray1.put(true);
+
+            jsonArray2.put(jsonArray1);
+            jsonArray2.put(jsonArray1);
+            jsonArray2.put(jsonArray1);
+            jsonArray2.put(jsonArray1);
+
+            jsonObject.put("signatures", jsonArray2);
+
             jsonOBJ = jsonObject.toString();
             Log.i("USER_json", jsonOBJ);
         } catch (JSONException e) {
@@ -360,6 +421,7 @@ public class Student implements Parcelable{
         parcel.writeInt(approvedCredits);
         parcel.writeInt(approvedQuarters);
         parcel.writeStringArray(alerts);
+        parcel.writeParcelable(signatures, i);
         parcel.writeByte((byte) (internetConnection ? 1 : 0));
     }
 }
