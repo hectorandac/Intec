@@ -2,6 +2,7 @@ package com.dragon.intec.objects;/*
  * Created by HOME on 8/25/2016.
  */
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -58,7 +59,6 @@ public class Student implements Parcelable{
         approvedQuarters = in.readInt();
         alerts = in.createStringArray();
         signatures = in.readParcelable(Signatures.class.getClassLoader());
-        internetConnection = in.readByte() != 0;
     }
 
     public static final Creator<Student> CREATOR = new Creator<Student>() {
@@ -190,8 +190,6 @@ public class Student implements Parcelable{
         return this;
     }
 
-    public boolean internetConnection = false;
-
     public Student(String token, String secret, Activity activity){
         this.token = token;
         this.secret = secret;
@@ -206,6 +204,8 @@ public class Student implements Parcelable{
     }
 
     public void getData() throws IOException, JSONException {
+
+        boolean internetConnection = false;
 
         if(!internetConnection){
 
@@ -259,7 +259,7 @@ public class Student implements Parcelable{
             //Get json from server parse it and add it to the list
             JSONObject jsonObject = null;
             try {
-                jsonObject = new JSONObject("-----------");
+                jsonObject = new JSONObject(reader.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -317,13 +317,24 @@ public class Student implements Parcelable{
             jsonObject.put("approved_quarters", getApprovedQuarters());
 
             String[] vals = getAlerts();
-
-            JSONArray jsonArray = new JSONArray();
+            JSONArray jsonArrayVal = new JSONArray();
             for (String val : vals) {
-                jsonArray.put(val);
+                jsonArrayVal.put(val);
             }
 
-            jsonObject.put("alerts", getAlerts());
+            jsonObject.put("alerts", jsonArrayVal);
+
+            String[][] signatures = getSignatures().getSignatures();
+            JSONArray jsonArraySignatures = new JSONArray();
+            for (String[] signature : signatures) {
+                JSONArray jsonArraySignature = new JSONArray();
+                for (String field : signature){
+                    jsonArraySignature.put(field);
+                }
+                jsonArraySignatures.put(jsonArraySignature);
+            }
+
+            jsonObject.put("signatures", jsonArraySignatures);
 
             jsonOBJ = jsonObject.toString();
             Log.i("USER_json", jsonOBJ);
@@ -400,6 +411,14 @@ public class Student implements Parcelable{
         editor.apply();
     }
 
+    @SuppressLint("CommitPrefEdits")
+    public void deleteStudent(){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(keyObject);
+        editor.commit();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -422,6 +441,5 @@ public class Student implements Parcelable{
         parcel.writeInt(approvedQuarters);
         parcel.writeStringArray(alerts);
         parcel.writeParcelable(signatures, i);
-        parcel.writeByte((byte) (internetConnection ? 1 : 0));
     }
 }

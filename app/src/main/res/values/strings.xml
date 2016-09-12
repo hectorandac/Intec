@@ -56,4 +56,11 @@
     <string name="tab_teacher">Profesor</string>
     <string name="tab_evaluation">Eval</string>
 
+    <!-- Cubicle Layout -->
+
+    <string name="reserved_hour">Hora reservada</string>
+    <string name="duration">Duración</string>
+    <string name="location">Localización</string>
+    <string name="students">Estudiantes</string>
+
 </resources>
