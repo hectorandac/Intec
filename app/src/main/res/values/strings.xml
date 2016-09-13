@@ -62,5 +62,12 @@
     <string name="duration">Duración</string>
     <string name="location">Localización</string>
     <string name="students">Estudiantes</string>
+    
+    <!-- Calendar fragment -->
+    
+    <string name="quarter_calendar">Calendario trimestral</string>
+    <string name="selection_calendar">Calendario selección</string>
+    <string name="annual_calendar">Calendario anual</string>
+    <string name="finance_calendar">Calendario finaciero</string>
 
 </resources>
