@@ -62,7 +62,7 @@
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:text="New Text"
-                    android:id="@+id/reserved_hour_cub_text"
+                    android:id="@+id/time_cub_tex"
                     android:layout_below="@+id/textView36"
                     android:textSize="20sp"
                     android:layout_alignParentRight="true"
@@ -145,19 +145,13 @@
                     android:text="@string/students"
                     android:id="@+id/textView39" />
 
-                <ScrollView
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/scrollView2"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/textView39">
-
                     <LinearLayout
                         android:orientation="vertical"
-                        android:layout_width="match_parent"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/students_list"></LinearLayout>
-                </ScrollView>
+                        android:id="@+id/students_list"
+                        android:layout_below="@+id/textView39"
+                        android:layout_alignParentRight="true"/>
 
             </RelativeLayout>
         </LinearLayout>
