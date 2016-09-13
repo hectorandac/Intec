@@ -3,6 +3,7 @@ package com.dragon.intec;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -96,8 +97,12 @@ public class MainActivity extends AppCompatActivity
 
     //Returns the fragment depending on the position
     private Fragment getFragment(int position){
-        navigationView.getMenu().getItem(position).setChecked(true);
-        setMenuItemId(position);
+        try{
+            navigationView.getMenu().getItem(position).setChecked(true);
+            setMenuItemId(position);
+        }catch(IndexOutOfBoundsException ex){
+            ex.printStackTrace();
+        }
 
         Fragment f = null;
 
@@ -167,7 +172,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int menuItemId = item.getItemId();
         Log.i("POSITION_fragment", String.valueOf(menuItemId));
