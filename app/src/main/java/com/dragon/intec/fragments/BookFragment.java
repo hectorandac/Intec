@@ -1,5 +1,6 @@
 package com.dragon.intec.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
@@ -70,6 +71,7 @@ public class BookFragment extends Fragment {
             return available;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
@@ -79,11 +81,9 @@ public class BookFragment extends Fragment {
                 FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.action_button_book_fragment);
                 fab.setImageResource(R.drawable.ic_more_vert_white_24dp);
                 LayoutInflater inflater = LayoutInflater.from(getActivity());
-                String time = cubicle.getReserved_hour() + ":00 AM";
 
                 View to_add = inflater.inflate(R.layout.cubicle_layout, null);
-                TextView text = ((TextView) to_add.findViewById(R.id.time_cub_tex));
-                text.setText(time);
+                ((TextView) to_add.findViewById(R.id.time_cub_tex)).setText(cubicle.getReserved_hour() + ":00 AM");
                 ((TextView) to_add.findViewById(R.id.cubicle_number)).setText(cubicle.getNumber());
                 ((TextView) to_add.findViewById(R.id.duration_cub_tex)).setText(cubicle.getDuration());
                 ((TextView) to_add.findViewById(R.id.location_cub_text)).setText(cubicle.getLocation());

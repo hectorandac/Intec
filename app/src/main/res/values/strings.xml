@@ -69,5 +69,6 @@
     <string name="selection_calendar">Calendario selección</string>
     <string name="annual_calendar">Calendario anual</string>
     <string name="finance_calendar">Calendario finaciero</string>
+    <string name="calendar">Calendario</string>
 
 </resources>

@@ -20,28 +20,28 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:text="@string/quarter_calendar"
-            android:id="@+id/button2"
+            android:id="@+id/quarter_calendar"
             android:layout_gravity="center_horizontal" />
 
         <Button
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:text="@string/selection_calendar"
-            android:id="@+id/button3"
+            android:id="@+id/selection_calendar"
             android:layout_gravity="center_horizontal" />
 
         <Button
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:text="@string/annual_calendar"
-            android:id="@+id/button4"
+            android:id="@+id/annual_calendar"
             android:layout_gravity="center_horizontal" />
 
         <Button
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:text="@string/finance_calendar"
-            android:id="@+id/button5"
+            android:id="@+id/finance_calendar"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>

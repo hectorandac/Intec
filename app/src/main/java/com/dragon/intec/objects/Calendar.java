@@ -5,6 +5,7 @@ package com.dragon.intec.objects;/*
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,10 +24,10 @@ public class Calendar {
 
     private ArrayList<String[]> calendarRows = new ArrayList<>();
 
-    public static final int TYPE_QUARTER = 1;
-    public static final int TYPE_SELECTION = 2;
-    public static final int TYPE_ANNUAL = 3;
-    public static final int TYPE_FINANCE = 4;
+    public static final int TYPE_QUARTER = 0;
+    public static final int TYPE_SELECTION = 1;
+    public static final int TYPE_ANNUAL = 2;
+    public static final int TYPE_FINANCE = 3;
 
     private static final String keyObject_1 = "CALENDAR_1";
     private static final String keyObject_2 = "CALENDAR_2";
@@ -39,6 +40,14 @@ public class Calendar {
 
     public Calendar(Activity activity, int type) {
         this.activity = activity;
+        this.type = type;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -74,7 +83,7 @@ public class Calendar {
         switch (type){
             case TYPE_QUARTER:
                 designedKey = keyObject_1;
-                column_count = 3;
+                column_count = 4;
                 break;
             case TYPE_SELECTION:
                 designedKey = keyObject_2;
@@ -143,7 +152,7 @@ public class Calendar {
                 returner = true;
 
                 //Then save it
-                //saveToJSON(activity);
+                saveToJSON(activity, designedKey);
             }
         }
 
@@ -171,5 +180,37 @@ public class Calendar {
         return sb.toString();
     }
 
+    public void saveToJSON(Activity activity, String keyObject){
 
+        String jsonOBJ = "";
+        JSONObject jsonObject= new JSONObject();
+        try {
+
+            ArrayList<String[]> rows = getCalendarRows();
+
+            JSONArray jsonArrayRows = new JSONArray();
+            for (String[] row : rows) {
+
+                JSONArray jsonArrayRow = new JSONArray();
+                for(String val : row) {
+                    jsonArrayRow.put(val);
+                }
+
+                jsonArrayRows.put(jsonArrayRow);
+            }
+
+            jsonObject.put("rows", jsonArrayRows);
+
+            jsonOBJ = jsonObject.toString();
+            Log.i("USER_json", jsonOBJ);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putString(keyObject, jsonOBJ);
+        editor.apply();
+    }
 }
