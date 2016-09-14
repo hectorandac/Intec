@@ -6,11 +6,13 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dragon.intec.R;
@@ -22,6 +24,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class CalendarFragment extends Fragment {
+
+    ProgressBar progressBar;
 
     public CalendarFragment() {
     }
@@ -48,12 +52,14 @@ public class CalendarFragment extends Fragment {
         Button getSelection = (Button) view.findViewById(R.id.selection_calendar);
         Button getAnnual = (Button) view.findViewById(R.id.annual_calendar);
         Button getFinance = (Button) view.findViewById(R.id.finance_calendar);
+        progressBar = (ProgressBar) view.findViewById(R.id.loading_bar);
 
         getQuarter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = new Calendar(getActivity(), 0);
                 new getCalendar().execute(calendar, activity);
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
 
@@ -62,6 +68,7 @@ public class CalendarFragment extends Fragment {
             public void onClick(View v) {
                 Calendar calendar = new Calendar(getActivity(), 1);
                 new getCalendar().execute(calendar, activity);
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
 
@@ -70,6 +77,7 @@ public class CalendarFragment extends Fragment {
             public void onClick(View v) {
                 Calendar calendar = new Calendar(getActivity(), 2);
                 new getCalendar().execute(calendar, activity);
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
 
@@ -78,6 +86,7 @@ public class CalendarFragment extends Fragment {
             public void onClick(View v) {
                 Calendar calendar = new Calendar(getActivity(), 3);
                 new getCalendar().execute(calendar, activity);
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
 
@@ -183,6 +192,13 @@ public class CalendarFragment extends Fragment {
 
             if (aBoolean){
                 showCalendar(activity, calendar);
+                progressBar.setVisibility(View.GONE);
+            } else{
+                progressBar.setVisibility(View.GONE);
+                Snackbar snackbar = Snackbar
+                        .make(getView(), "Welcome to AndroidHive", Snackbar.LENGTH_LONG);
+
+                snackbar.show();
             }
 
         }

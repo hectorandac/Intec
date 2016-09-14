@@ -95,7 +95,7 @@ public class Calendar {
                 break;
             case TYPE_FINANCE:
                 designedKey = keyObject_4;
-                column_count = 1;
+                column_count = 3;
                 break;
         }
 
