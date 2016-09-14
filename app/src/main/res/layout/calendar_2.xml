@@ -6,19 +6,29 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/master_title"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:textSize="15sp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimaryDark"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/title_calendar"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         android:textSize="12sp"
         android:textColor="@android:color/white"
-        android:background="@color/colorPrimary" />
+        android:background="@color/colorPrimary"/>
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/horizontalScrollView2">
-
+        android:id="@+id/horizontalScrollView3" >
 
         <LinearLayout
             android:orientation="vertical"
@@ -27,9 +37,7 @@
             android:id="@+id/row_container"
             android:layout_marginBottom="16dp"
             android:divider="@drawable/divider"
-            android:showDividers="middle">
-
-        </LinearLayout>
-
+            android:showDividers="middle" />
     </HorizontalScrollView>
+
 </LinearLayout>

@@ -83,15 +83,15 @@ public class Calendar {
         switch (type){
             case TYPE_QUARTER:
                 designedKey = keyObject_1;
-                column_count = 4;
+                column_count = 5;
                 break;
             case TYPE_SELECTION:
                 designedKey = keyObject_2;
-                column_count = 2;
+                column_count = 5;
                 break;
             case TYPE_ANNUAL:
                 designedKey = keyObject_3;
-                column_count = 5;
+                column_count = 7;
                 break;
             case TYPE_FINANCE:
                 designedKey = keyObject_4;
@@ -131,8 +131,10 @@ public class Calendar {
 
         }else{
             //Testing
-            String url = "http://intecapp.azurewebsites.net/api/calendar?t={"+type+"}";
+            String url = "http://intecapp.azurewebsites.net/api/calendar?t="+type+"";
             JSONObject jsonObject = readJsonFromUrl(url);
+
+            Log.i("USER_json", jsonObject.toString());
 
             if (jsonObject != null) {
 

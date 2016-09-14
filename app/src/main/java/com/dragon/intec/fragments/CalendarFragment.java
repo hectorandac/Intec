@@ -19,6 +19,7 @@ import com.dragon.intec.objects.Calendar;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class CalendarFragment extends Fragment {
 
@@ -94,29 +95,59 @@ public class CalendarFragment extends Fragment {
         String title = ((TextView)designedLayout.findViewById(R.id.title_calendar)).getText().toString();
 
         LinearLayout linearLayout = (LinearLayout) dialog.findViewById(R.id.content_holder);
+        boolean once = true;
+        ArrayList<String[]> rowsCalendar = calendarData.getCalendarRows();
 
-        for(String[] row : calendarData.getCalendarRows()){
-            if (!row[1].equals(title)){
-                if(((LinearLayout) designedLayout.findViewById(R.id.row_container)).getChildCount() > 0){
-                    linearLayout.addView(designedLayout);
+        for (String[] row : rowsCalendar) {
+            if (calendarData.getType() == 2 && row[2].contains("Descrip")) {
+
+                LinearLayout tempHolder = (LinearLayout) designedLayout.findViewById(R.id.columns_definers);
+
+                int count = tempHolder.getChildCount();
+
+                TextView v;
+                for (int i = 0; i < count; i++) {
+                    v = (TextView) tempHolder.getChildAt(i);
+                    v.setText(row[i + 2]);
+                    System.out.println("HERE" + count + v.getText().toString());
                 }
-                designedLayout = inflater.inflate(getResources().getIdentifier("calendar_"+designedCalendar, "layout", context.getPackageName()), null);
-                title = row[1];
-                ((TextView)designedLayout.findViewById(R.id.title_calendar)).setText(title);
+
+            } else {
+
+                if (!row[1].equals(title)) {
+                    if (((LinearLayout) designedLayout.findViewById(R.id.row_container)).getChildCount() > 0) {
+                        if (once) {
+                            try {
+                                TextView temp = ((TextView) designedLayout.findViewById(R.id.master_title));
+                                temp.setVisibility(View.VISIBLE);
+                                temp.setText(row[0]);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                            once = false;
+                        }
+                        linearLayout.addView(designedLayout);
+                    }
+                    if(calendarData.getType() != 2) {
+                        designedLayout = inflater.inflate(getResources().getIdentifier("calendar_" + designedCalendar, "layout", context.getPackageName()), null);
+                    }
+                    title = row[1];
+                    ((TextView) designedLayout.findViewById(R.id.title_calendar)).setText(title);
+                }
+
+                LinearLayout tempHolder = (LinearLayout) (inflater.inflate(
+                        getResources().getIdentifier("row_layout_" + designedCalendar, "layout", context.getPackageName()), null))
+                        .findViewById(R.id.container);
+
+                int count = tempHolder.getChildCount();
+                TextView v;
+                for (int i = 0; i < count; i++) {
+                    v = (TextView) tempHolder.getChildAt(i);
+                    v.setText(row[i + 2]);
+                }
+
+                ((LinearLayout) designedLayout.findViewById(R.id.row_container)).addView(tempHolder);
             }
-
-            LinearLayout tempHolder = (LinearLayout) (inflater.inflate(
-                    getResources().getIdentifier("row_layout_"+designedCalendar, "layout", context.getPackageName()), null))
-                    .findViewById(R.id.container);
-
-            int count = tempHolder.getChildCount();
-            TextView v;
-            for(int i=0; i<count; i++) {
-                v = (TextView) tempHolder.getChildAt(i);
-                v.setText(row[i+2]);
-            }
-
-            ((LinearLayout) designedLayout.findViewById(R.id.row_container)).addView(tempHolder);
         }
 
         linearLayout.addView(designedLayout);
