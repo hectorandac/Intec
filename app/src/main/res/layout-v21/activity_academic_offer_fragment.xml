@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageButton"
-            android:src="@drawable/ic_search_white_24dp" />
+            android:src="@drawable/ic_search_white_24dp"
+            android:backgroundTint="@color/colorPrimary" />
     </LinearLayout>
 
     <LinearLayout
@@ -36,9 +37,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
-        android:padding="16dp"
-        android:id="@+id/exp_container">
-
-    </LinearLayout>
+        android:id="@+id/exp_container"></LinearLayout>
 
 </RelativeLayout>

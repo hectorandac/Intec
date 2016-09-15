@@ -1,4 +1,6 @@
-package com.dragon.intec.objects;/*
+package com.dragon.intec.objects;
+
+/*
  * Created by HOME on 9/13/2016.
  */
 
