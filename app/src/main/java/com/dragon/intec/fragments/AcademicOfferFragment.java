@@ -6,17 +6,30 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 
 import com.dragon.intec.R;
+import com.dragon.intec.objects.ClassRoom;
 import com.dragon.intec.objects.ClassRooms;
+import com.dragon.intec.objects.CustomAdapters.ExpandableListAdapterGroupe;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class AcademicOfferFragment extends Fragment {
 
-    ClassRooms classRooms = null;
+    private ClassRooms classRooms = null;
+
+    private ExpandableListAdapter listAdapter;
+    private ExpandableListView expListView;
+
+    private List<ClassRoom> listDataHeader;
+    private HashMap<ClassRoom, ClassRooms> listDataChild;
 
     public AcademicOfferFragment() {
 
@@ -38,8 +51,47 @@ public class AcademicOfferFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        classRooms = new ClassRooms(getActivity(), "Fisi");
+        classRooms = new ClassRooms(getActivity(), null);
         new getData().execute(classRooms);
+    }
+
+    private void showOffers(ClassRooms classRooms) {
+
+        // get the listview
+        expListView = (ExpandableListView) getView().findViewById(R.id.exp_container);
+
+        // preparing list data
+        prepareData(classRooms);
+        listAdapter = new ExpandableListAdapterGroupe(getActivity(), listDataHeader, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+
+    }
+
+    private void prepareData(ClassRooms classRoomsMain) {
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
+
+        ClassRooms classRooms = new ClassRooms(null, null);
+        classRooms.setClassRooms(classRoomsMain.getClassRooms());
+
+        while (classRooms.getClassRooms().size() > 0) {
+            String name = classRooms.getClassRooms().get(0).getArea();
+
+            ClassRooms result = classRooms.getByArea(name);
+
+            if(result.getClassRooms().size() > 0) {
+                listDataHeader.add(classRooms.getClassRooms().get(0));
+                listDataChild.put(classRooms.getClassRooms().get(0), result);
+            }
+
+            for (ClassRoom c : result.getClassRooms()){
+                classRooms.removeClassRoom(c);
+            }
+
+        }
+
     }
 
     private class getData extends AsyncTask<ClassRooms, Void, Boolean> {
@@ -63,7 +115,7 @@ public class AcademicOfferFragment extends Fragment {
             super.onPostExecute(aBoolean);
 
             if (aBoolean) {
-                System.out.println(classRooms.getClassRooms().get(0).getName());
+                showOffers(classRooms);
             }
 
         }

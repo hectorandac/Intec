@@ -31,12 +31,18 @@
             android:backgroundTint="@color/colorPrimary" />
     </LinearLayout>
 
-    <LinearLayout
+    <ExpandableListView
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
-        android:id="@+id/exp_container"></LinearLayout>
+        android:id="@+id/exp_container"
+        android:clickable="true"
+        android:touchscreenBlocksFocus="false"
+        android:choiceMode="singleChoice"
+        android:background="#d5d5d5">
+
+    </ExpandableListView>
 
 </RelativeLayout>

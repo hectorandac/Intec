@@ -55,6 +55,19 @@ public class ClassRooms {
         classRooms.remove(classRoom);
     }
 
+    public ClassRooms getByArea(String area) {
+        ClassRooms classRoomsSend = new ClassRooms(null, null);
+
+        for (ClassRoom classRoom : this.getClassRooms())
+        {
+            if (classRoom.getArea().equals(area)){
+                classRoomsSend.addClassRoom(classRoom);
+            }
+        }
+
+        return classRoomsSend;
+    };
+
     public boolean getData() throws IOException, JSONException {
 
         boolean internetConnection = true;
@@ -133,11 +146,11 @@ public class ClassRooms {
                     classRoom.setTeacher(jsonObject.optString("teacher"));
 
                     JSONArray mon = jsonObject.getJSONArray("mon");
-                    JSONArray tue = jsonObject.getJSONArray("mon");
-                    JSONArray wed = jsonObject.getJSONArray("mon");
-                    JSONArray thu = jsonObject.getJSONArray("mon");
-                    JSONArray fri = jsonObject.getJSONArray("mon");
-                    JSONArray sat = jsonObject.getJSONArray("mon");
+                    JSONArray tue = jsonObject.getJSONArray("tue");
+                    JSONArray wed = jsonObject.getJSONArray("wed");
+                    JSONArray thu = jsonObject.getJSONArray("thu");
+                    JSONArray fri = jsonObject.getJSONArray("fri");
+                    JSONArray sat = jsonObject.getJSONArray("sat");
 
                     classRoom.setMon(new String[]{mon.optString(0), mon.optString(1)});
                     classRoom.setTue(new String[]{tue.optString(0), tue.optString(1)});
@@ -149,11 +162,9 @@ public class ClassRooms {
                     classRoom.setArea(jsonObject.optString("area"));
                     classRoom.setCode(jsonObject.optString("code"));
                     classRoom.setName(jsonObject.optString("name"));
+                    classRoom.setCredits(jsonObject.optString("credits"));
 
-                    String name = classRoom.getName();
-
-                    if(this.name == null)
-                        addClassRoom(classRoom);
+                    addClassRoom(classRoom);
                 }
 
                 returner = true;

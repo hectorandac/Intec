@@ -71,4 +71,17 @@
     <string name="finance_calendar">Calendario finaciero</string>
     <string name="calendar">Calendario</string>
 
+    <!-- Expandable list headers -->
+
+    <string name="type">Tipo</string>
+    <string name="sec">Sec</string>
+    <string name="room">Aula</string>
+    <string name="teacher">Profesor</string>
+    <string name="mon">lun</string>
+    <string name="tue">Mar</string>
+    <string name="wed">Mie</string>
+    <string name="thu">Jue</string>
+    <string name="fri">Vie</string>
+    <string name="sat">Sab</string>
+
 </resources>

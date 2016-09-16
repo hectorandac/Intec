@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dragon.intec.fragments.PreselectionFragment">
+    tools:context="com.dragon.intec.fragments.PreselectionFragment"
+    android:clickable="true"
+    android:touchscreenBlocksFocus="false">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -30,15 +32,20 @@
             android:src="@drawable/ic_search_white_24dp" />
     </LinearLayout>
 
-    <LinearLayout
+    <ExpandableListView
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
         android:padding="16dp"
-        android:id="@+id/exp_container">
+        android:id="@+id/exp_container"
+        android:headerDividersEnabled="false"
+        android:touchscreenBlocksFocus="false"
+        android:choiceMode="singleChoice"
+        android:clickable="true"
+        android:background="#d5d5d5">
 
-    </LinearLayout>
+    </ExpandableListView>
 
 </RelativeLayout>

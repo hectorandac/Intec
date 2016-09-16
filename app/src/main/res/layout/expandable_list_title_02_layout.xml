@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/horizontalScrollView7"
+        android:background="@color/colorPrimary">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="0dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="0dp">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="@string/type"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="@string/sec"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="@string/room"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="@string/teacher"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="@string/mon"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="@string/tue"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="@string/wed"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="@string/thu"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="@string/fri"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="@string/sat"
+                android:layout_marginBottom="0dp"
+                android:textSize="10sp"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>

@@ -24,6 +24,7 @@ public class ClassRoom {
     private String area = "";
     private String code = "";
     private String name = "";
+    private String credits = "";
 
     public ClassRoom (){
 
@@ -153,5 +154,23 @@ public class ClassRoom {
     public ClassRoom setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public String getCredits() {
+        return credits;
+    }
+
+    public ClassRoom setCredits(String credits) {
+        this.credits = credits;
+        return this;
+    }
+
+    public String fixedTime(String start, String end) {
+        String returner = "";
+
+        if(start.length() > 1 && end.length() > 1)
+            returner = start + "/" + end;
+
+        return returner;
     }
 }
