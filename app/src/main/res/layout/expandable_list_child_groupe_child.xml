@@ -8,18 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/header"
-            android:visibility="gone" >
-
-            <include
-                layout="@layout/expandable_list_title_02_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"

@@ -3,6 +3,8 @@ package com.dragon.intec.fragments;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,8 @@ public class AcademicOfferFragment extends Fragment {
     private List<ClassRoom> listDataHeader;
     private HashMap<ClassRoom, ClassRooms> listDataChild;
 
+    private BottomSheetBehavior mBottomSheetBehavior;
+
     public AcademicOfferFragment() {
 
     }
@@ -53,12 +57,30 @@ public class AcademicOfferFragment extends Fragment {
 
         classRooms = new ClassRooms(getActivity(), null);
         new getData().execute(classRooms);
+
+        View bottomSheet = view.findViewById( R.id.bottom_sheet );
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        mBottomSheetBehavior.setHideable(true);
+
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                // React to state change
+            }
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // React to dragging events
+            }
+        });
+
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     private void showOffers(ClassRooms classRooms) {
 
         // get the listview
-        expListView = (ExpandableListView) getView().findViewById(R.id.exp_container);
+        if (expListView == null)
+            expListView = (ExpandableListView) getView().findViewById(R.id.exp_container);
 
         // preparing list data
         prepareData(classRooms);

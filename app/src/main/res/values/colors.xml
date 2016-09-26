@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#b71c1c</color>
     <color name="colorAccent">#E53935</color>
     <color name="softColorAccent">#ffcdd2</color>
+    <color name="heading_back">#eeeeee</color>
 </resources>
