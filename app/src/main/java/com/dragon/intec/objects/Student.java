@@ -23,9 +23,7 @@ import java.util.ArrayList;
 public class Student implements Parcelable{
 
     private String token;
-    private String secret;
     private static final String keyToken = "TOKEN";
-    private static final String keySecret = "SECRETE";
     private static final String keyObject = "STUDENT";
     private Activity activity;
 
@@ -45,7 +43,6 @@ public class Student implements Parcelable{
 
     protected Student(Parcel in) {
         token = in.readString();
-        secret = in.readString();
         id = in.readString();
         name = in.readString();
         program = in.readString();
@@ -59,6 +56,15 @@ public class Student implements Parcelable{
         approvedQuarters = in.readInt();
         alerts = in.createStringArray();
         signatures = in.readParcelable(Signatures.class.getClassLoader());
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public Student setToken(String token) {
+        this.token = token;
+        return this;
     }
 
     public static final Creator<Student> CREATOR = new Creator<Student>() {
@@ -77,7 +83,7 @@ public class Student implements Parcelable{
         return signatures;
     }
 
-     private Student setSignatures(Signatures signatures) {
+    private Student setSignatures(Signatures signatures) {
         this.signatures = signatures;
         return this;
     }
@@ -190,15 +196,13 @@ public class Student implements Parcelable{
         return this;
     }
 
-    public Student(String token, String secret, Activity activity){
+    public Student(String token, Activity activity){
         this.token = token;
-        this.secret = secret;
         this.activity = activity;
 
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(keyToken, token);
-        editor.putString(keySecret, secret);
 
         editor.apply();
     }
@@ -427,7 +431,6 @@ public class Student implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(token);
-        parcel.writeString(secret);
         parcel.writeString(id);
         parcel.writeString(name);
         parcel.writeString(program);

@@ -22,7 +22,7 @@
     <string name="academic_offer">Oferta academica</string>
 
     <!-- Main activity -->
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Intec</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
@@ -62,6 +62,11 @@
     <string name="duration">Duración</string>
     <string name="location">Localización</string>
     <string name="students">Estudiantes</string>
+    <string name="one_hr">1 Hora</string>
+    <string name="two_hr">2 Horas</string>
+    <string name="hint_hr">Seleccione la hora</string>
+    <string name="hint_name">Nombre</string>
+    <string name="hint_id">Id</string>
     
     <!-- Calendar fragment -->
     
@@ -83,5 +88,13 @@
     <string name="thu">Jue</string>
     <string name="fri">Vie</string>
     <string name="sat">Sab</string>
+
+    <!-- Layout heading quarter -->
+    
+    <string name="code">Clave</string>
+    <string name="signature">Asignatura</string>
+    <string name="credits">CR</string>
+    <string name="prerequisites">Prerrequisito</string>
+    <string name="cred_req">Req. Cred</string>
 
 </resources>

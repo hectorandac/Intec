@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/quarter_place"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/white" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/code"
+            android:id="@+id/textView51"
+            android:layout_weight="0.3"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/signature"
+            android:id="@+id/textView52"
+            android:layout_weight="0.7"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/credits"
+            android:id="@+id/textView53"
+            android:layout_weight="0.2"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/prerequisites"
+            android:id="@+id/textView54"
+            android:layout_weight="0.4"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cred_req"
+            android:id="@+id/textView55"
+            android:layout_weight="0.15"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton2"
+            android:src="@drawable/ic_picture_as_pdf_black_24dp"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+</LinearLayout>
