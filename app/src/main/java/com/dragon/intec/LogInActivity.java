@@ -3,6 +3,7 @@ package com.dragon.intec;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
@@ -13,10 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-
-import com.dragon.intec.objects.Student;
-
-import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,20 +26,35 @@ import java.nio.charset.Charset;
 
 public class LogInActivity extends AppCompatActivity {
 
-    private static final String keyStudent = "STUDENT";
+    private static final String keyToken = "TOKEN";
     private FrameLayout frameLayout;
+    private View incorrectMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
+        frameLayout = (FrameLayout) findViewById(R.id.loading_screen);
+        incorrectMessage = findViewById(R.id.incorrect);
+
+        ((ProgressBar) frameLayout.findViewById(R.id.progressBar)).getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+
+        if(!sharedPref.getString(keyToken, "null").equals("null")) {
+
+            frameLayout.setVisibility(View.VISIBLE);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     //On login button pressed
     public void logIn(View v) {
         //Shows the loading screen
-        frameLayout = (FrameLayout) findViewById(R.id.loading_screen);
-        ((ProgressBar) frameLayout.findViewById(R.id.progressBar)).getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         frameLayout.setVisibility(View.VISIBLE);
 
         //Hides the keyboard
@@ -65,19 +77,19 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     //Authenticates the user
-    public class LogInRequest extends AsyncTask<Object, Void, Student> {
+    public class LogInRequest extends AsyncTask<Object, Void, String> {
 
-        Context context;
+        Activity activity;
 
         @Override
-        protected Student doInBackground(Object... objects) {
+        protected String doInBackground(Object... objects) {
 
             //Gets user credentials from passed data
             String id = (String) objects[0];
             String password = (String) objects[1];
 
             //May be used to create the request and start next Activity
-            this.context = (Context) objects[2];
+            this.activity = (Activity) objects[2];
 
             byte[] rawData = ("{\"Username\": \""+ id +"\", \"Password\": \""+ password +"\"}").getBytes();
             URL u;
@@ -100,31 +112,36 @@ public class LogInActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Student student = null;
+            String token = "";
             try {
                 assert conn != null;
                 BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), Charset.forName("UTF-8")));
-                student = new Student(readAll(rd), (Activity)objects[2]);
-                student.getData();
-            } catch (IOException | JSONException e) {
+                token = readAll(rd);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return student;
+            return token;
         }
 
         @Override
-        protected void onPostExecute(Student student) {
-            super.onPostExecute(student);
+        protected void onPostExecute(String token) {
+            super.onPostExecute(token);
 
-            if(student.getToken().length() > 1) {
-                Intent intent = new Intent(context, MainActivity.class);
-                intent.putExtra(keyStudent, student);
+            if(token.length() > 1) {
+
+                SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(keyToken, token);
+                editor.apply();
+
+                Intent intent = new Intent(activity, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
             else {
                 frameLayout.setVisibility(View.INVISIBLE);
+                incorrectMessage.setVisibility(View.VISIBLE);
             }
         }
 

@@ -48,9 +48,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bundle bundle = getIntent().getExtras();
-        student = bundle.getParcelable(keyStudent);
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 

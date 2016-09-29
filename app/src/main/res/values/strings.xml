@@ -5,6 +5,7 @@
     <string name="id">Id / Usuario</string>
     <string name="password">Contraseña</string>
     <string name="enter">iniciar</string>
+    <string name="incorrect">Usuario o contraseña incorrectos</string>
 
     <!-- Menu -->
     <string name="student_process">Procesos estudiantiles</string>
