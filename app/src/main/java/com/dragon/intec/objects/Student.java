@@ -10,14 +10,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
+import java.io.Reader;
 import java.util.ArrayList;
 
 public class Student implements Parcelable{
@@ -209,11 +213,11 @@ public class Student implements Parcelable{
 
     public void getData() throws IOException, JSONException {
 
-        boolean internetConnection = false;
+        boolean internetConnection = true;
 
         if(!internetConnection){
 
-            saveToJSONTEST(activity);
+            //saveToJSONTEST(activity);
 
             SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
             String jsonOBJ = sharedPref.getString(keyObject, "");
@@ -256,32 +260,42 @@ public class Student implements Parcelable{
 
 
         }else{
-            //Testing
-            URL url = new URL("http://coolsite.com/coolstuff.js");
-            InputStream in = url.openStream();
-            InputStreamReader reader = new InputStreamReader(in);
-            //Get json from server parse it and add it to the list
+
+            SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+            String jsonOBJ = sharedPref.getString(keyToken, "bearer 8N9DyxIJFfhjGawh07un8tQPEsSSO2R7Grx3gpaot_CXkt9B4Hsxoy4aU0zEy96ZuYUpco_CHcWm7X-sG75QwD8TfIn7GtM2nsA9RmtGyivKbNHngL_vw2jt2pS8iPiK_shXBqqvjPhyofxvSzjt3nPv7uOqfEr2Nbz-MN3jKf48SWLObC6kvc8Z8I5ugrtNEifEg4zszoX5TXtHJrEVUBOsohhMtgAIgcrpS8g5JYk");
+
+
+
             JSONObject jsonObject = null;
+
+            HttpClient client = new DefaultHttpClient(new BasicHttpParams());
+            HttpGet httpGet = new HttpGet("http://angularjsauthentication20161012.azurewebsites.net/api/user");
+            httpGet.addHeader("Authorization", jsonOBJ);
+            HttpResponse response = null;
             try {
-                jsonObject = new JSONObject(reader.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
+                response = client.execute(httpGet);
+            }catch (Exception e){
+
             }
 
-            assert jsonObject != null;
-            setId(jsonObject.optString("id"));
-            setName(jsonObject.optString("name"));
-            setProgram(jsonObject.optString("program"));
-            setAcademicCondition(jsonObject.optString("academic_condition"));
-            setQuarter(jsonObject.optString("quarter"));
-            setLastCondition(jsonObject.optString("last_condition"));
-            setQuarterIndex(Double.parseDouble(jsonObject.optString("quarter_index")));
-            setGeneralIndex(Double.parseDouble(jsonObject.optString("general_index")));
-            setValidatedCredits(Integer.parseInt(jsonObject.optString("validated_credits")));
-            setApprovedCredits(Integer.parseInt(jsonObject.optString("approved_credits")));
-            setApprovedQuarters(Integer.parseInt(jsonObject.optString("approved_quarters")));
+            String a = EntityUtils.toString(response.getEntity());
 
-            ArrayList<String> vals = new ArrayList<>();
+            System.out.println("###" + a + jsonOBJ + "  ss");
+            jsonObject = new JSONObject(a);
+
+            try {
+                setId(jsonObject.optString("id"));
+                setProgram(jsonObject.optString("program"));
+                setAcademicCondition(jsonObject.optString("academicCondition"));
+                setQuarter(jsonObject.optString("startingQuarter"));
+                setLastCondition(jsonObject.optString("lastCondition"));
+                setQuarterIndex(Double.parseDouble(jsonObject.optString("quarterIndex")));
+                setGeneralIndex(Double.parseDouble(jsonObject.optString("generalIndex")));
+                setValidatedCredits(Integer.parseInt(jsonObject.optString("validatedCredits")));
+                setApprovedCredits(Integer.parseInt(jsonObject.optString("approvedCredits")));
+                setApprovedQuarters(Integer.parseInt(jsonObject.optString("quarterCount")));
+
+            /*ArrayList<String> vals = new ArrayList<>();
             JSONArray jsonArray = jsonObject.getJSONArray("alerts");
             for (int i = 0; i < jsonArray.length(); i++){
                 vals.add(jsonArray.getString(i));
@@ -296,10 +310,13 @@ public class Student implements Parcelable{
                     Log.i("USER_signatures", signatures[i][j]);
                 }
             }
-            setSignatures(new Signatures(signatures));
+            setSignatures(new Signatures(signatures));*/
 
-            //Then save it
-            saveToJSON(activity);
+                //Then save it
+                saveToJSON(activity);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -320,7 +337,7 @@ public class Student implements Parcelable{
             jsonObject.put("approved_credits", getApprovedCredits());
             jsonObject.put("approved_quarters", getApprovedQuarters());
 
-            String[] vals = getAlerts();
+            /*String[] vals = getAlerts();
             JSONArray jsonArrayVal = new JSONArray();
             for (String val : vals) {
                 jsonArrayVal.put(val);
@@ -338,7 +355,7 @@ public class Student implements Parcelable{
                 jsonArraySignatures.put(jsonArraySignature);
             }
 
-            jsonObject.put("signatures", jsonArraySignatures);
+            jsonObject.put("signatures", jsonArraySignatures);*/
 
             jsonOBJ = jsonObject.toString();
             Log.i("USER_json", jsonOBJ);
@@ -353,7 +370,7 @@ public class Student implements Parcelable{
         editor.apply();
     }
 
-    private void saveToJSONTEST(Activity activity){
+    /*private void saveToJSONTEST(Activity activity){
 
         String jsonOBJ = "";
         JSONObject jsonObject= new JSONObject();
@@ -413,7 +430,7 @@ public class Student implements Parcelable{
 
         editor.putString(keyObject, jsonOBJ);
         editor.apply();
-    }
+    }*/
 
     @SuppressLint("CommitPrefEdits")
     public void deleteStudent(){
@@ -421,6 +438,15 @@ public class Student implements Parcelable{
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.remove(keyObject);
         editor.commit();
+    }
+
+    private String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
+        }
+        return sb.toString();
     }
 
     @Override

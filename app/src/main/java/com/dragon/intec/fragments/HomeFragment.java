@@ -2,18 +2,19 @@ package com.dragon.intec.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dragon.intec.MainActivity;
 import com.dragon.intec.R;
 import com.dragon.intec.objects.Student;
+
+import org.json.JSONException;
+
+import java.io.IOException;
 
 public class HomeFragment extends Fragment {
 
@@ -37,22 +38,11 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        View mainView = getView();
         Activity activity = getActivity();
-        Student student = ((MainActivity) activity).getStudent();
+        new FillBlanks().execute(activity);
 
-        assert mainView != null;
-        ((TextView) mainView.findViewById(R.id.id_user)).setText(student.getId());
-        ((TextView) mainView.findViewById(R.id.program_user)).setText(student.getProgram());
-        ((TextView) mainView.findViewById(R.id.condition_user)).setText(student.getAcademicCondition());
-        ((TextView) mainView.findViewById(R.id.quarter_user)).setText(student.getQuarter());
-        ((TextView) mainView.findViewById(R.id.last_condition_user)).setText(student.getLastCondition());
-        ((TextView) mainView.findViewById(R.id.quarter_index_user)).setText(String.valueOf(student.getQuarterIndex()));
-        ((TextView) mainView.findViewById(R.id.general_index_user)).setText(String.valueOf(student.getGeneralIndex()));
-        ((TextView) mainView.findViewById(R.id.validated_credits_user)).setText(String.valueOf(student.getValidatedCredits()));
-        ((TextView) mainView.findViewById(R.id.approved_credits_user)).setText(String.valueOf(student.getApprovedCredits()));
-        ((TextView) mainView.findViewById(R.id.approved_quarter_user)).setText(String.valueOf(student.getApprovedQuarters()));
 
+        /*
         LinearLayout linearLayout = (LinearLayout) mainView.findViewById(R.id.alerts_user);
         String[] vals = student.getAlerts();
         for (String val : vals) {
@@ -87,8 +77,45 @@ public class HomeFragment extends Fragment {
 
             }
             listSignatures.addView(listElements);
+        }*/
+
+
+    }
+
+    private class FillBlanks extends AsyncTask<Activity, Void, Student> {
+
+        @Override
+        protected Student doInBackground(Activity... params) {
+
+            Student student = new Student(null, params[0]);
+
+            try {
+                student.getData();
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+
+            return student;
         }
 
+        @Override
+        protected void onPostExecute(Student student) {
+            super.onPostExecute(student);
 
+
+            View mainView = getView();
+
+            assert mainView != null;
+            ((TextView) mainView.findViewById(R.id.id_user)).setText(student.getId());
+            ((TextView) mainView.findViewById(R.id.program_user)).setText(student.getProgram());
+            ((TextView) mainView.findViewById(R.id.condition_user)).setText(student.getAcademicCondition());
+            ((TextView) mainView.findViewById(R.id.quarter_user)).setText(student.getQuarter());
+            ((TextView) mainView.findViewById(R.id.last_condition_user)).setText(student.getLastCondition());
+            ((TextView) mainView.findViewById(R.id.quarter_index_user)).setText(String.valueOf(student.getQuarterIndex()));
+            ((TextView) mainView.findViewById(R.id.general_index_user)).setText(String.valueOf(student.getGeneralIndex()));
+            ((TextView) mainView.findViewById(R.id.validated_credits_user)).setText(String.valueOf(student.getValidatedCredits()));
+            ((TextView) mainView.findViewById(R.id.approved_credits_user)).setText(String.valueOf(student.getApprovedCredits()));
+            ((TextView) mainView.findViewById(R.id.approved_quarter_user)).setText(String.valueOf(student.getApprovedQuarters()));
+        }
     }
 }

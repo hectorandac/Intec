@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,13 +45,13 @@ public class LogInActivity extends AppCompatActivity {
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
-        if(!sharedPref.getString(keyToken, "null").equals("null")) {
+        /*if(!sharedPref.getString(keyToken, "null").equals("null")) {
 
             frameLayout.setVisibility(View.VISIBLE);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
-        }
+        }*/
 
     }
 
@@ -80,6 +83,7 @@ public class LogInActivity extends AppCompatActivity {
     public class LogInRequest extends AsyncTask<Object, Void, String> {
 
         Activity activity;
+        int authorized = 403;
 
         @Override
         protected String doInBackground(Object... objects) {
@@ -90,23 +94,20 @@ public class LogInActivity extends AppCompatActivity {
 
             //May be used to create the request and start next Activity
             this.activity = (Activity) objects[2];
-
-            byte[] rawData = ("{\"Username\": \""+ id +"\", \"Password\": \""+ password +"\"}").getBytes();
-            URL u;
             HttpURLConnection conn = null;
             try {
-                u = new URL("http://cppapp.azurewebsites.net/Account/MobileLogin");
+                byte[] rawData = ("grant_type=password&username="+id+"&password="+password+"").getBytes();
+                URL u = new URL("http://angularjsauthentication20161012.azurewebsites.net/token");
                 conn = (HttpURLConnection) u.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
 
                 conn.setFixedLengthStreamingMode(rawData.length);
-                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setRequestProperty("Content-Type", "x-www-form-urlencoded; charset=UTF-8");
                 conn.connect();
 
                 OutputStream os = conn.getOutputStream();
                 os.write(rawData);
-
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -115,6 +116,7 @@ public class LogInActivity extends AppCompatActivity {
             String token = "";
             try {
                 assert conn != null;
+                authorized = conn.getResponseCode();
                 BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), Charset.forName("UTF-8")));
                 token = readAll(rd);
             } catch (IOException e) {
@@ -128,11 +130,24 @@ public class LogInActivity extends AppCompatActivity {
         protected void onPostExecute(String token) {
             super.onPostExecute(token);
 
-            if(token.length() > 1) {
+            JSONObject jsonObject = null;
+
+            try {
+                jsonObject = new JSONObject(token);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if(authorized == 200) {
 
                 SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(keyToken, token);
+                try {
+                    assert jsonObject != null;
+                    editor.putString(keyToken, jsonObject.getString("token_type") + " " + jsonObject.getString("access_token"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 editor.apply();
 
                 Intent intent = new Intent(activity, MainActivity.class);

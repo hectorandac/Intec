@@ -68,6 +68,9 @@
     <string name="hint_hr">Seleccione la hora</string>
     <string name="hint_name">Nombre</string>
     <string name="hint_id">Id</string>
+    <string name="reserve_cubicle">Reservar cubiculo</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
     
     <!-- Calendar fragment -->
     

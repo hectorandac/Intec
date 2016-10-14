@@ -2,16 +2,21 @@ package com.dragon.intec.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.dragon.intec.R;
 import com.dragon.intec.objects.Cubicle;
@@ -20,6 +25,7 @@ import com.dragon.intec.objects.PartialStudent;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 public class BookFragment extends Fragment {
 
@@ -45,10 +51,67 @@ public class BookFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         view = getView();
-        Activity activity = getActivity();
+        final Activity activity = getActivity();
+
+        FloatingActionButton actionButton = (FloatingActionButton) view.findViewById(R.id.action_button_book_fragment);
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater i = getActivity().getLayoutInflater();
+                final View layout = i.inflate(R.layout.layout_cubicle_reserve,null);
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
+                        .setTitle(R.string.reserve_cubicle)
+                        .setView(layout)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+
+                final View timePickerView = layout.findViewById(R.id.time_picker);
+
+                TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        String timeStr = hourOfDay + ":00";
+                        ((EditText) timePickerView).setText(timeStr);
+                    }
+                };
+
+
+                final TimePickerDialog timePicker = new TimePickerDialog(activity, time, Calendar.getInstance().getTime().getHours(), 0, true);
+
+                timePickerView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        timePicker.show();
+                    }
+                });
+
+                timePickerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if(hasFocus)
+                            timePicker.show();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
 
         Cubicle cubicle = new Cubicle(activity);
-        new getCubicle().execute(cubicle);
+        //new getCubicle().execute(cubicle);
 
     }
 
