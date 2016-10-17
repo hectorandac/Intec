@@ -25,6 +25,16 @@ public class ClassRoom {
     private String code = "";
     private String name = "";
     private String credits = "";
+    private String grades = "";
+
+
+    public String getGrades() {
+        return grades;
+    }
+
+    public void setGrades(String grades) {
+        this.grades = grades;
+    }
 
     public ClassRoom (){
 
@@ -168,7 +178,7 @@ public class ClassRoom {
     public String fixedTime(String start, String end) {
         String returner = "";
 
-        if(start.length() > 1 && end.length() > 1)
+        if(start.length() > 0 && end.length() > 0)
             returner = start + "/" + end;
 
         return returner;

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.dragon.intec.components.TokenRequester;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,11 +24,14 @@ import java.util.ArrayList;
 
 public class Cubicle {
 
+    private static final String keyToken = "TOKEN";
+
     private String id = "";
     private String number = "";
     private int reserved_hour = 0;
     private String duration = "";
     private String location = "";
+    private String status = "";
     private ArrayList<PartialStudent> students = new ArrayList<>();
 
     private Activity activity;
@@ -43,6 +48,14 @@ public class Cubicle {
     public Cubicle setId(String id) {
         this.id = id;
         return this;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDuration() {
@@ -98,6 +111,62 @@ public class Cubicle {
         students.remove(student);
     }
 
+    public Cubicle[] availableList() throws IOException, JSONException {
+
+        ArrayList<Cubicle> cubicles = new ArrayList<>();
+
+        SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
+        String token = sharedPref.getString(keyToken, "");
+
+        JSONArray jsonArray = new TokenRequester(token).postGetArray("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle/availability");
+
+        for (int obj = 0; obj < jsonArray.length(); obj++) {
+            JSONObject object = jsonArray.getJSONObject(obj);
+            Cubicle cubicle = new Cubicle(activity);
+            cubicle.setId(object.optString("id"));
+            cubicle.setNumber(object.optString("number"));
+            cubicle.setReserved_hour(object.optInt("reservedHour"));
+
+            cubicles.add(cubicle);
+        }
+
+        return cubicles.toArray(new Cubicle[cubicles.size()]);
+    }
+
+    public static Integer[] getAvailableHours(Cubicle[] cubicles){
+
+        ArrayList<Integer> hours = new ArrayList<>();
+
+        for (Cubicle cubicle : cubicles) {
+            hours.add(cubicle.getReserved_hour());
+        }
+
+        return hours.toArray(new Integer[hours.size()]);
+    }
+
+    public void makeReservationIntent(Cubicle[] cubiclesTry, int hour) throws Exception {
+
+        for(Cubicle cubicle : cubiclesTry){
+
+            SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
+            String token = sharedPref.getString(keyToken, "");
+
+            JSONObject cubicleObj = new JSONObject();
+
+            cubicleObj.put("id", cubicle.getId());
+            cubicleObj.put("number", cubicle.getNumber());
+            cubicleObj.put("reservedHour", cubicle.getReserved_hour());
+            cubicleObj.put("duration", cubicle.getDuration());
+            cubicleObj.put("status", 3);
+            cubicleObj.put("students", null);
+
+            String respond = new TokenRequester(token).makeRequest("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle/reserve", cubicleObj);
+            if (respond.equals("true")){
+                break;
+            }
+        }
+    }
+
     public boolean getData() throws IOException, JSONException {
 
         boolean internetConnection = true;
@@ -142,16 +211,18 @@ public class Cubicle {
 
 
         }else{
-            //Testing
-            String url = "http://intecapp.azurewebsites.net/api/cubicle";
-            JSONObject jsonObject = readJsonFromUrl(url);
+
+            SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
+            String token = sharedPref.getString(keyToken, "");
+
+            JSONObject jsonObject = new TokenRequester(token).getObject("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle");
 
             if (jsonObject != null) {
                 setId(jsonObject.optString("id"));
                 setNumber(jsonObject.optString("number"));
-                setReserved_hour(Integer.parseInt(jsonObject.optString("reserved_hour")));
+                setReserved_hour(Integer.parseInt(jsonObject.optString("reservedHour")));
                 setDuration(jsonObject.optString("duration"));
-                setLocation(jsonObject.optString("location"));
+                setStatus(jsonObject.optString("status"));
 
                 ArrayList<PartialStudent> students = new ArrayList<>();
                 JSONArray jsonArray = jsonObject.getJSONArray("students");

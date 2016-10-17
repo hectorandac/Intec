@@ -214,7 +214,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textView12"
-                        android:layout_margin="16dp">
+                        android:layout_margin="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:id="@+id/alerts_tap">
 
                         <LinearLayout
                             android:orientation="vertical"
@@ -245,7 +247,8 @@
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tab_signatures">
+                    android:id="@+id/tab_signatures"
+                    android:gravity="center">
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -279,6 +282,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/tab_sections"
                             android:id="@+id/textView15"
+                            android:layout_marginRight="4dp"
+                            android:layout_marginLeft="4dp"
+                            android:gravity="center"
+                            android:textColor="@android:color/white" />
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tab_room"
+                            android:id="@+id/textView25"
                             android:layout_marginRight="4dp"
                             android:layout_marginLeft="4dp"
                             android:gravity="center"

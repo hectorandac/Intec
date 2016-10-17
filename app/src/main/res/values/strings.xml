@@ -42,11 +42,13 @@
     <string name="default_field">-</string>
 
     <string name="alerts">Alertas</string>
+    <string name="no_alerts">Usted no tiene alertas</string>
 
     <string name="selected_signatures">Asignaturas seleccionadas</string>
     <string name="tab_code">Código</string>
     <string name="tab_signature">Asignatura</string>
     <string name="tab_sections">Sec</string>
+    <string name="tab_room">Aula</string>
     <string name="tab_monday">Lun</string>
     <string name="tab_tuesday">Ma</string>
     <string name="tab_wednesday">Mi</string>
@@ -62,15 +64,26 @@
     <string name="reserved_hour">Hora reservada</string>
     <string name="duration">Duración</string>
     <string name="location">Localización</string>
-    <string name="students">Estudiantes</string>
+    <string name="students">Estudiantes (Tus compañeros)</string>
     <string name="one_hr">1 Hora</string>
     <string name="two_hr">2 Horas</string>
     <string name="hint_hr">Seleccione la hora</string>
     <string name="hint_name">Nombre</string>
     <string name="hint_id">Id</string>
     <string name="reserve_cubicle">Reservar cubiculo</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="status">Estado:</string>
+    <string name="avaliable_hours">Horas disponibles</string>
+
+    <string name="location_1">Biblioteca, Segundo piso</string>
+    <string name="location_2">Biblioteca, Zotano</string>
+    <string name="location_3">AH, 4to piso</string>
+
+    <string name="status_1">En espera</string>
+    <string name="status_2">Libre</string>
+    <string name="status_3">En uso</string>
+    <string name="status_4">Disponible</string>
     
     <!-- Calendar fragment -->
     

@@ -9,14 +9,209 @@
     android:layout_marginLeft="16dp"
     android:focusableInTouchMode="true">
 
-    <EditText
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/time_picker"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:editable="false"
-        android:hint="@string/hint_hr" />
+        android:text="@string/avaliable_hours"
+        android:id="@+id/textView26"
+        android:layout_gravity="center_horizontal" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/horizontalScrollView6"
+        android:layout_margin="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/available_list">
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="8"
+                android:textOn="8"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="9"
+                android:textOn="9"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton2"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="10"
+                android:textOn="10"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton3"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="11"
+                android:textOn="11"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton4"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="12"
+                android:textOn="12"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton5"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="13"
+                android:textOn="13"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton6"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="14"
+                android:textOn="14"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton7"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="15"
+                android:textOn="15"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton8"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="16"
+                android:textOn="16"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton9"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="17"
+                android:textOn="17"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton10"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="18"
+                android:textOn="18"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton11"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="19"
+                android:textOn="19"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton12"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="20"
+                android:textOn="20"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton13"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+
+            <ToggleButton
+                android:gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textOff="21"
+                android:textOn="21"
+                android:checked="false"
+                android:background="@drawable/flat_circle_selectable"
+                android:id="@+id/toggleButton14"
+                android:layout_margin="2dp"
+                android:textColor="@android:color/white"
+                android:enabled="false" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <RadioGroup
         android:layout_width="match_parent"

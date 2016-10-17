@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,20 +11,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
+import android.widget.ToggleButton;
 
 import com.dragon.intec.R;
+import com.dragon.intec.components.CubInfoConstant;
 import com.dragon.intec.objects.Cubicle;
 import com.dragon.intec.objects.PartialStudent;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.Calendar;
 
 public class BookFragment extends Fragment {
 
@@ -58,72 +58,93 @@ public class BookFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                LayoutInflater i = getActivity().getLayoutInflater();
-                final View layout = i.inflate(R.layout.layout_cubicle_reserve,null);
+                new newCubicle().execute(activity);
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
-                        .setTitle(R.string.reserve_cubicle)
-                        .setView(layout)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-
-
-                final View timePickerView = layout.findViewById(R.id.time_picker);
-
-                TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        String timeStr = hourOfDay + ":00";
-                        ((EditText) timePickerView).setText(timeStr);
-                    }
-                };
-
-
-                final TimePickerDialog timePicker = new TimePickerDialog(activity, time, Calendar.getInstance().getTime().getHours(), 0, true);
-
-                timePickerView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        timePicker.show();
-                    }
-                });
-
-                timePickerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if(hasFocus)
-                            timePicker.show();
-                    }
-                });
-
-                dialog.show();
             }
         });
 
         Cubicle cubicle = new Cubicle(activity);
-        //new getCubicle().execute(cubicle);
+        new getCubicle().execute(cubicle, activity);
 
     }
 
-    public class getCubicle extends AsyncTask<Cubicle, Void, Boolean> {
+    public class newCubicle extends AsyncTask<Object, Void, Integer[]>{
 
-        Cubicle cubicle;
+        Activity activity;
 
         @Override
-        protected Boolean doInBackground(Cubicle... params) {
+        protected Integer[] doInBackground(Object... params) {
+
+            activity = (Activity) params[0];
+            Cubicle[] cubicles = null;
+            try {
+                cubicles = new Cubicle(activity).availableList();
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+
+            return Cubicle.getAvailableHours(cubicles);
+        }
+
+        @Override
+        protected void onPostExecute(Integer[] hours) {
+            super.onPostExecute(hours);
+
+            LayoutInflater i = getActivity().getLayoutInflater();
+            final View layout = i.inflate(R.layout.layout_cubicle_reserve,null);
+
+            final LinearLayout hourList = (LinearLayout) layout.findViewById(R.id.available_list);
+
+            for(int hour : hours){
+                ToggleButton hourButton = (ToggleButton) hourList.getChildAt(hour - 8);
+                hourButton.setEnabled(true);
+            }
+
+            for(int l = 0; l < hourList.getChildCount(); l++){
+                final ToggleButton hourBtn = (ToggleButton) hourList.getChildAt(l);
+                hourBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked){
+                            hourSelected(hourBtn, hourList, layout.findViewById(R.id.radioButton2), layout.findViewById(R.id.radioButton));
+                        }
+                    }
+                });
+            }
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
+                    .setTitle(R.string.reserve_cubicle)
+                    .setView(layout)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+            dialog.show();
+
+        }
+    }
+
+    public class getCubicle extends AsyncTask<Object, Void, Boolean> {
+
+        Cubicle cubicle;
+        Activity activity;
+
+        @Override
+        protected Boolean doInBackground(Object... params) {
 
             Boolean available = false;
-            cubicle = params[0];
+            cubicle = (Cubicle) params[0];
+            activity = (Activity) params[1];
 
             try {
                 available = cubicle.getData();
@@ -149,7 +170,11 @@ public class BookFragment extends Fragment {
                 ((TextView) to_add.findViewById(R.id.time_cub_tex)).setText(cubicle.getReserved_hour() + ":00 AM");
                 ((TextView) to_add.findViewById(R.id.cubicle_number)).setText(cubicle.getNumber());
                 ((TextView) to_add.findViewById(R.id.duration_cub_tex)).setText(cubicle.getDuration());
-                ((TextView) to_add.findViewById(R.id.location_cub_text)).setText(cubicle.getLocation());
+
+                ((TextView) to_add.findViewById(R.id.location_cub_text))
+                        .setText(CubInfoConstant.location(Integer.parseInt(cubicle.getNumber()), activity));
+                ((TextView) to_add.findViewById(R.id.state_changer_icon_cub_tex))
+                        .setText(activity.getResources().getString(R.string.status) + " " + CubInfoConstant.Status(Integer.parseInt(cubicle.getStatus()), activity));
 
                 LinearLayout studentsList = (LinearLayout) to_add.findViewById(R.id.students_list);
                 for(PartialStudent partialStudent : cubicle.getStudents()){
@@ -158,11 +183,47 @@ public class BookFragment extends Fragment {
                     textView.setText(student);
                     studentsList.addView(textView);
                 }
+
                 ((FrameLayout) view.findViewById(R.id.view_display)).addView(to_add);
 
+            }
+        }
+    }
 
+    private int getSelectedHour(LinearLayout parent){
+
+        int hour = 0;
+
+        for (int i = 0; i < parent.getChildCount(); i++){
+            if(((ToggleButton) parent.getChildAt(i)).isChecked()){
+                hour = i + 8;
+                break;
             }
 
+            if (i == (parent.getChildCount()-1)){
+                hour = -1;
+            }
+        }
+
+        return hour;
+    }
+
+    private void hourSelected(View v, LinearLayout parent, View selectableFail, View selectableAlternately) {
+
+        int viewPosition = parent.indexOfChild(v);
+
+        if(parent.getChildAt(viewPosition + 1) == null || !((ToggleButton) parent.getChildAt(viewPosition + 1)).isEnabled()){
+            selectableFail.setEnabled(false);
+            ((RadioButton)selectableAlternately).setChecked(true);
+        }else{
+            selectableFail.setEnabled(true);
+        }
+
+        for (int childIndex = 0; childIndex < parent.getChildCount(); childIndex++) {
+            if (childIndex != viewPosition){
+                ToggleButton hourBtn = (ToggleButton) parent.getChildAt(childIndex);
+                hourBtn.setChecked(false);
+            }
         }
     }
 }

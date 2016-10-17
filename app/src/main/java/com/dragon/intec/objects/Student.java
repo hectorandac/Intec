@@ -6,16 +6,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.util.EntityUtils;
+import com.dragon.intec.components.TokenRequester;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +18,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 
-public class Student implements Parcelable{
+public class Student{
 
     private String token;
     private static final String keyToken = "TOKEN";
@@ -43,24 +37,7 @@ public class Student implements Parcelable{
     private int approvedCredits;
     private int approvedQuarters;
     private String[] alerts;
-    private Signatures signatures;
-
-    protected Student(Parcel in) {
-        token = in.readString();
-        id = in.readString();
-        name = in.readString();
-        program = in.readString();
-        academicCondition = in.readString();
-        quarter = in.readString();
-        lastCondition = in.readString();
-        quarterIndex = in.readDouble();
-        generalIndex = in.readDouble();
-        validatedCredits = in.readInt();
-        approvedCredits = in.readInt();
-        approvedQuarters = in.readInt();
-        alerts = in.createStringArray();
-        signatures = in.readParcelable(Signatures.class.getClassLoader());
-    }
+    private ClassRoom[] signatures;
 
     public String getToken() {
         return token;
@@ -71,23 +48,11 @@ public class Student implements Parcelable{
         return this;
     }
 
-    public static final Creator<Student> CREATOR = new Creator<Student>() {
-        @Override
-        public Student createFromParcel(Parcel in) {
-            return new Student(in);
-        }
-
-        @Override
-        public Student[] newArray(int size) {
-            return new Student[size];
-        }
-    };
-
-    public Signatures getSignatures() {
+    public ClassRoom[] getSignatures() {
         return signatures;
     }
 
-    private Student setSignatures(Signatures signatures) {
+    private Student setSignatures(ClassRoom[] signatures) {
         this.signatures = signatures;
         return this;
     }
@@ -200,15 +165,8 @@ public class Student implements Parcelable{
         return this;
     }
 
-    public Student(String token, Activity activity){
-        this.token = token;
+    public Student(Activity activity){
         this.activity = activity;
-
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(keyToken, token);
-
-        editor.apply();
     }
 
     public void getData() throws IOException, JSONException {
@@ -220,10 +178,10 @@ public class Student implements Parcelable{
             //saveToJSONTEST(activity);
 
             SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-            String jsonOBJ = sharedPref.getString(keyObject, "");
+            String token = sharedPref.getString(keyObject, "");
             JSONObject jsonObject = null;
             try {
-                jsonObject = new JSONObject(jsonOBJ);
+                jsonObject = new JSONObject(token);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -255,33 +213,16 @@ public class Student implements Parcelable{
                     signatures[i][j] = jsonArraySignatures.getJSONArray(i).getString(j);
                 }
             }
-            setSignatures(new Signatures(signatures));
+            //setSignatures(new Signatures(signatures));
             Log.i("USER_signatures", signatures[0][0]);
 
 
         }else{
 
-            SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-            String jsonOBJ = sharedPref.getString(keyToken, "bearer 8N9DyxIJFfhjGawh07un8tQPEsSSO2R7Grx3gpaot_CXkt9B4Hsxoy4aU0zEy96ZuYUpco_CHcWm7X-sG75QwD8TfIn7GtM2nsA9RmtGyivKbNHngL_vw2jt2pS8iPiK_shXBqqvjPhyofxvSzjt3nPv7uOqfEr2Nbz-MN3jKf48SWLObC6kvc8Z8I5ugrtNEifEg4zszoX5TXtHJrEVUBOsohhMtgAIgcrpS8g5JYk");
+            SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
+            String token = sharedPref.getString(keyToken, "");
 
-
-
-            JSONObject jsonObject = null;
-
-            HttpClient client = new DefaultHttpClient(new BasicHttpParams());
-            HttpGet httpGet = new HttpGet("http://angularjsauthentication20161012.azurewebsites.net/api/user");
-            httpGet.addHeader("Authorization", jsonOBJ);
-            HttpResponse response = null;
-            try {
-                response = client.execute(httpGet);
-            }catch (Exception e){
-
-            }
-
-            String a = EntityUtils.toString(response.getEntity());
-
-            System.out.println("###" + a + jsonOBJ + "  ss");
-            jsonObject = new JSONObject(a);
+            JSONObject jsonObject = new TokenRequester(token).getObject("http://angularjsauthentication20161012.azurewebsites.net/api/user");
 
             try {
                 setId(jsonObject.optString("id"));
@@ -295,34 +236,62 @@ public class Student implements Parcelable{
                 setApprovedCredits(Integer.parseInt(jsonObject.optString("approvedCredits")));
                 setApprovedQuarters(Integer.parseInt(jsonObject.optString("quarterCount")));
 
-            /*ArrayList<String> vals = new ArrayList<>();
-            JSONArray jsonArray = jsonObject.getJSONArray("alerts");
-            for (int i = 0; i < jsonArray.length(); i++){
-                vals.add(jsonArray.getString(i));
-            }
-            setAlerts(vals.toArray(new String[vals.size()]));
 
-            JSONArray jsonArraySignatures = jsonObject.getJSONArray("signatures");
-            String[][] signatures = new String[jsonArraySignatures.length()][12];
-            for (int i = 0; i < jsonArraySignatures.length(); i++){
-                for (int j = 0; j < 12; j++){
-                    signatures[i][j] = jsonArraySignatures.getJSONArray(i).getString(j);
-                    Log.i("USER_signatures", signatures[i][j]);
-                }
-            }
-            setSignatures(new Signatures(signatures));*/
-
-                //Then save it
-                saveToJSON(activity);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            JSONArray jsonArrayAlert = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/alerts");
+
+            ArrayList<String> vals = new ArrayList<>();
+            for (int i = 0; i < jsonArrayAlert.length(); i++){
+                vals.add(jsonArrayAlert.getJSONObject(i).getString("alertText"));
+            }
+            setAlerts(vals.toArray(new String[vals.size()]));
+
+            JSONArray jsonArraySignature = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/classes");
+
+            ArrayList<ClassRoom> classRooms = new ArrayList<>();
+            for (int i = 0; i < jsonArraySignature.length(); i++){
+                JSONObject jsonObjectSignature = jsonArraySignature.getJSONObject(i);
+
+                String code = jsonObjectSignature.optString("code");
+                String name = jsonObjectSignature.optString("name");
+                String section = jsonObjectSignature.optString("section");
+                String room = jsonObjectSignature.optString("room");
+                String teacher = jsonObjectSignature.optString("teacher");
+                String mon = jsonObjectSignature.optString("monday");
+                String tue = jsonObjectSignature.optString("tuesday");
+                String wed = jsonObjectSignature.optString("wednesday");
+                String thu = jsonObjectSignature.optString("thursday");
+                String fri = jsonObjectSignature.optString("friday");
+                String sat = jsonObjectSignature.optString("saturday");
+
+                ClassRoom classRoom = new ClassRoom();
+                classRoom.setCode(code);
+                classRoom.setName(name);
+                classRoom.setSec(section);
+                classRoom.setRoom(room);
+                classRoom.setTeacher(teacher);
+                classRoom.setMon(mon.split("/"));
+                classRoom.setTue(tue.split(""));
+                classRoom.setWed(wed.split("/"));
+                classRoom.setThu(thu.split("/"));
+                classRoom.setFri(fri.split("/"));
+                classRoom.setSat(sat.split("/"));
+
+                classRooms.add(classRoom);
+            }
+            setSignatures(classRooms.toArray(new ClassRoom[classRooms.size()]));
+
+            //Then save it
+            saveToJSON(activity);
         }
     }
 
     public void saveToJSON(Activity activity){
 
-        String jsonOBJ = "";
+        String token = "";
         JSONObject jsonObject= new JSONObject();
         try {
             jsonObject.put("id", getId());
@@ -357,22 +326,22 @@ public class Student implements Parcelable{
 
             jsonObject.put("signatures", jsonArraySignatures);*/
 
-            jsonOBJ = jsonObject.toString();
-            Log.i("USER_json", jsonOBJ);
+            token = jsonObject.toString();
+            Log.i("USER_json", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
         SharedPreferences.Editor editor = sharedPref.edit();
 
-        editor.putString(keyObject, jsonOBJ);
+        editor.putString(keyObject, token);
         editor.apply();
     }
 
     /*private void saveToJSONTEST(Activity activity){
 
-        String jsonOBJ = "";
+        String token = "";
         JSONObject jsonObject= new JSONObject();
         try {
             jsonObject.put("id", "1065948");
@@ -419,8 +388,8 @@ public class Student implements Parcelable{
 
             jsonObject.put("signatures", jsonArray2);
 
-            jsonOBJ = jsonObject.toString();
-            Log.i("USER_json", jsonOBJ);
+            token = jsonObject.toString();
+            Log.i("USER_json", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -428,7 +397,7 @@ public class Student implements Parcelable{
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
-        editor.putString(keyObject, jsonOBJ);
+        editor.putString(keyObject, token);
         editor.apply();
     }*/
 
@@ -447,28 +416,5 @@ public class Student implements Parcelable{
             sb.append((char) cp);
         }
         return sb.toString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(token);
-        parcel.writeString(id);
-        parcel.writeString(name);
-        parcel.writeString(program);
-        parcel.writeString(academicCondition);
-        parcel.writeString(quarter);
-        parcel.writeString(lastCondition);
-        parcel.writeDouble(quarterIndex);
-        parcel.writeDouble(generalIndex);
-        parcel.writeInt(validatedCredits);
-        parcel.writeInt(approvedCredits);
-        parcel.writeInt(approvedQuarters);
-        parcel.writeStringArray(alerts);
-        parcel.writeParcelable(signatures, i);
     }
 }

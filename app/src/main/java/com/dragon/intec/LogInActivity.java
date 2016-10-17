@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -140,19 +141,21 @@ public class LogInActivity extends AppCompatActivity {
 
             if(authorized == 200) {
 
-                SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
                 SharedPreferences.Editor editor = sharedPref.edit();
+                String token_got = null;
                 try {
                     assert jsonObject != null;
-                    editor.putString(keyToken, jsonObject.getString("token_type") + " " + jsonObject.getString("access_token"));
+                    token_got = jsonObject.getString("token_type") + " " + jsonObject.getString("access_token");
+                    Log.i("TOKEN###", token_got);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                editor.apply();
-
-                Intent intent = new Intent(activity, MainActivity.class);
-                startActivity(intent);
-                finish();
+                editor.putString(keyToken, token_got);
+                if(editor.commit()) {
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    startActivity(intent);
+                }
             }
             else {
                 frameLayout.setVisibility(View.INVISIBLE);
