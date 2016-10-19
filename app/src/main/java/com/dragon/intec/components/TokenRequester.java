@@ -1,5 +1,8 @@
 package com.dragon.intec.components;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -15,10 +18,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
-/**
+/*
  * Created by hecto on 10/16/2016.
  */
+
 public class TokenRequester {
 
     private String token = "";
@@ -37,7 +43,12 @@ public class TokenRequester {
         String object = EntityUtils.toString(response.getEntity());
         Log.i("HEY&&S##", object);
 
-        return new JSONObject(object);
+        JSONObject returner = null;
+        if(!object.equals("null")){
+            returner = new JSONObject(object);
+        }
+
+        return returner;
     }
 
     public JSONArray getArray(String url) throws IOException, JSONException {
@@ -60,30 +71,40 @@ public class TokenRequester {
         HttpResponse responseAlert = clientAlert.execute(httpGetAlert);
 
         String array = EntityUtils.toString(responseAlert.getEntity());
-
         return new JSONArray(array);
     }
 
     public String makeRequest(String url, JSONObject obj) throws Exception
     {
-        //instantiates httpclient to make request
         DefaultHttpClient httpclient = new DefaultHttpClient();
-
-        //url with the post data
         HttpPost httpost = new HttpPost(url);
-
-        //passes the results to a string builder/entity
         StringEntity se = new StringEntity(obj.toString());
-
-        //sets the post request as the resulting string
         httpost.setEntity(se);
-        //sets a request header so the page receving the request
-        //will know what to do with it
-        httpost.setHeader("Accept", "application/json");
+        httpost.setHeader("Authorization", token);
         httpost.setHeader("Content-type", "application/json");
 
         //Handles what is returned from the page
         HttpResponse response = httpclient.execute(httpost);
         return EntityUtils.toString(response.getEntity());
+    }
+
+    public Bitmap getUserProfile(String url) throws IOException, JSONException {
+
+        JSONObject obj = getObject(url);
+        String imageByteArray = obj.optString("image");
+        byte[] byteArray = Base64.decode(imageByteArray, Base64.DEFAULT);
+        //Bitmap bitmap = Bitmap.createScaledBitmap(bmp1, 120, 120, false);
+
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+    }
+
+    public void cancelCubicleRequest(String url, JSONObject obj) throws IOException {
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        HttpPost httpost = new HttpPost(url);
+        StringEntity se = new StringEntity(obj.toString());
+        httpost.setEntity(se);
+        httpost.setHeader("Authorization", token);
+        httpost.setHeader("Content-type", "application/json");
+        HttpResponse response = httpclient.execute(httpost);
     }
 }

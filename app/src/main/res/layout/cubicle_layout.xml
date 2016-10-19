@@ -139,19 +139,25 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp" >
 
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/textView39"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginStart="40dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/students_list"/>
+                </ScrollView>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/students"
                     android:id="@+id/textView39" />
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/students_list"
-                        android:layout_below="@+id/textView39"
-                        android:layout_alignParentRight="true"/>
 
             </RelativeLayout>
         </LinearLayout>

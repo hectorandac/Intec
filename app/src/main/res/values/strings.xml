@@ -58,6 +58,8 @@
     <string name="tab_grades">Calif</string>
     <string name="tab_teacher">Profesor</string>
     <string name="tab_evaluation">Eval</string>
+    <string name="err_delete_title">Atención</string>
+    <string name="err_delete">Esta apunto de cancelar la reserva,\n ¿desea continuar?</string>
 
     <!-- Cubicle Layout -->
 
@@ -65,6 +67,7 @@
     <string name="duration">Duración</string>
     <string name="location">Localización</string>
     <string name="students">Estudiantes (Tus compañeros)</string>
+    <string name="students_2">Estudiantes</string>
     <string name="one_hr">1 Hora</string>
     <string name="two_hr">2 Horas</string>
     <string name="hint_hr">Seleccione la hora</string>
@@ -84,6 +87,12 @@
     <string name="status_2">Libre</string>
     <string name="status_3">En uso</string>
     <string name="status_4">Disponible</string>
+
+    <string name="err_1">• Debe de seleccionar la hora a reservar.</string>
+    <string name="err_2">• Debe de selccionar la duracion de la reserva.</string>
+    <string name="err_3">• Todo estudiante introducido debe de tener un identificador y su nombre.</string>
+
+    <string name="err_msg">Error</string>
     
     <!-- Calendar fragment -->
     

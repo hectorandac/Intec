@@ -1,7 +1,11 @@
 package com.dragon.intec;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,7 +17,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.dragon.intec.components.TokenRequester;
 import com.dragon.intec.fragments.AcademicOfferFragment;
 import com.dragon.intec.fragments.BookFragment;
 import com.dragon.intec.fragments.CalendarFragment;
@@ -27,6 +35,12 @@ import com.dragon.intec.fragments.SignaturesProgramsFragment;
 import com.dragon.intec.fragments.TeacherEvaluationFragment;
 import com.dragon.intec.objects.Student;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -36,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     //Key attached to the value of the position on view created
     private static final String keyPosition = "POSITION";
     private static final String keyStudent = "STUDENT";
+    private static final String keyToken = "TOKEN";
 
     public Student student;
 
@@ -50,6 +65,8 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        new setIdentity().execute();
 
         Fragment f = null;
 
@@ -128,6 +145,48 @@ public class MainActivity extends AppCompatActivity
         }
 
         return f;
+    }
+
+    private class setIdentity extends AsyncTask<Object, Void, Boolean>{
+
+        private String name = "";
+        private String email = "";
+        private Bitmap picture = null;
+
+        @Override
+        protected Boolean doInBackground(Object... params) {
+
+            SharedPreferences sharedPref = getSharedPreferences("token", 0);
+            String token = sharedPref.getString(keyToken, "");
+
+            try {
+
+                JSONObject jsonObject = new TokenRequester(token).getObject("http://angularjsauthentication20161012.azurewebsites.net/api/user");
+                name = jsonObject.optString("nameMain");
+                picture = new TokenRequester(token).getUserProfile("http://angularjsauthentication20161012.azurewebsites.net/api/Image");
+                email = jsonObject.optString("id") + "@est.intec.edu.do";
+
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            View hView =  navigationView.getHeaderView(0);
+            TextView nav_user = (TextView)hView.findViewById(R.id.user_name);
+            ImageView nav_user_pic = (ImageView)hView.findViewById(R.id.user_picture);
+            TextView nav_user_email = (TextView)hView.findViewById(R.id.user_email);
+
+            nav_user_pic.setImageBitmap(picture);
+            nav_user.setText(name);
+            nav_user_email.setText(email);
+
+        }
     }
 
     @Override

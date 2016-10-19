@@ -79,7 +79,7 @@ public class AcademicOfferFragment extends Fragment {
     private void showOffers(ClassRooms classRooms) {
 
         // get the listview
-        if (expListView == null)
+        if (expListView != null)
             expListView = (ExpandableListView) getView().findViewById(R.id.exp_container);
 
         // preparing list data

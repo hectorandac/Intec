@@ -214,6 +214,7 @@
     </HorizontalScrollView>
 
     <RadioGroup
+        android:id="@+id/identifier_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -240,7 +241,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton4"
+        android:id="@+id/add_student_btn"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_person_add_white_24dp"
         android:background="@drawable/back_number_circle_flat_red"
@@ -254,6 +255,7 @@
         android:id="@+id/textView61" />
 
     <LinearLayout
+        android:id="@+id/students_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -270,14 +272,14 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/editText2"
+                android:id="@+id/name"
                 android:layout_weight="0.4"
                 android:hint="@string/hint_name" />
 
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText3"
+                android:id="@+id/id"
                 android:layout_weight="0.3"
                 android:hint="@string/hint_id" />
 

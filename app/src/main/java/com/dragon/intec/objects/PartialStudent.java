@@ -12,6 +12,9 @@ public class PartialStudent {
         this.name = name;
     }
 
+    public PartialStudent(){
+    }
+
     public String getName() {
         return name;
     }

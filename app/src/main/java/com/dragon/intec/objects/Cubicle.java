@@ -5,6 +5,7 @@ package com.dragon.intec.objects;/*
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.dragon.intec.components.TokenRequester;
@@ -25,8 +26,10 @@ import java.util.ArrayList;
 public class Cubicle {
 
     private static final String keyToken = "TOKEN";
+    private static final String keyObject = "CUBICLE";
+    private static final String keyStudent = "STUDENT";
 
-    private String id = "";
+    private String uniqueId = "";
     private String number = "";
     private int reserved_hour = 0;
     private String duration = "";
@@ -35,19 +38,9 @@ public class Cubicle {
     private ArrayList<PartialStudent> students = new ArrayList<>();
 
     private Activity activity;
-    private static final String keyObject = "CUBICLE";
 
     public Cubicle(Activity activity) {
         this.activity = activity;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Cubicle setId(String id) {
-        this.id = id;
-        return this;
     }
 
     public String getStatus() {
@@ -83,6 +76,14 @@ public class Cubicle {
     public Cubicle setReserved_hour(int reserved_hour) {
         this.reserved_hour = reserved_hour;
         return this;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     public String getLocation() {
@@ -123,7 +124,7 @@ public class Cubicle {
         for (int obj = 0; obj < jsonArray.length(); obj++) {
             JSONObject object = jsonArray.getJSONObject(obj);
             Cubicle cubicle = new Cubicle(activity);
-            cubicle.setId(object.optString("id"));
+            cubicle.setUniqueId(object.optString("uniqueId"));
             cubicle.setNumber(object.optString("number"));
             cubicle.setReserved_hour(object.optInt("reservedHour"));
 
@@ -144,26 +145,108 @@ public class Cubicle {
         return hours.toArray(new Integer[hours.size()]);
     }
 
-    public void makeReservationIntent(Cubicle[] cubiclesTry, int hour) throws Exception {
+    public boolean makeReservationIntent(Cubicle[] cubiclesTry, int hour, PartialStudent[] partialStudents, int identifier) throws Exception {
 
-        for(Cubicle cubicle : cubiclesTry){
+        new sendForm().execute(cubiclesTry, hour, partialStudents, identifier);
 
-            SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
-            String token = sharedPref.getString(keyToken, "");
+        return false;
+    }
 
-            JSONObject cubicleObj = new JSONObject();
+    private class sendForm extends AsyncTask<Object, Void, Boolean> {
 
-            cubicleObj.put("id", cubicle.getId());
-            cubicleObj.put("number", cubicle.getNumber());
-            cubicleObj.put("reservedHour", cubicle.getReserved_hour());
-            cubicleObj.put("duration", cubicle.getDuration());
-            cubicleObj.put("status", 3);
-            cubicleObj.put("students", null);
+        Cubicle[] cubiclesTry;
+        int hour;
+        PartialStudent[] partialStudents;
+        int identifier;
 
-            String respond = new TokenRequester(token).makeRequest("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle/reserve", cubicleObj);
-            if (respond.equals("true")){
-                break;
+        @Override
+        protected Boolean doInBackground(Object... params) {
+
+            cubiclesTry = (Cubicle[]) params[0];
+            hour = (int) params[1];
+            partialStudents = (PartialStudent[]) params[2];
+            identifier = (int) params[3];
+
+            for(int i = 0; i < identifier; i++) {
+                hour = hour + i;
+
+                ArrayList<Cubicle> finalList = new ArrayList<>();
+
+                for(Cubicle cubicle : cubiclesTry){
+                    if(cubicle.getReserved_hour() == hour){
+                        finalList.add(cubicle);
+                    }
+                }
+
+                for (Cubicle cubicle : finalList) {
+
+                    SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
+                    String token = sharedPref.getString(keyToken, "");
+
+                    JSONObject cubicleObj = new JSONObject();
+
+                    try {
+                        cubicleObj.put("uniqueId", cubicle.getUniqueId());
+                        cubicleObj.put("number", cubicle.getNumber());
+                        cubicleObj.put("reservedHour", cubicle.getReserved_hour());
+                        cubicleObj.put("duration", cubicle.getDuration());
+                        cubicleObj.put("status", 3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    JSONArray students = new JSONArray();
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new TokenRequester(token).getObject("http://angularjsauthentication20161012.azurewebsites.net/api/user");
+                        JSONObject studentMainOBJ = new JSONObject();
+
+                        studentMainOBJ.put("name", jsonObject.optString("nameMain"));
+                        studentMainOBJ.put("id", jsonObject.optString("id"));
+
+                        students.put(studentMainOBJ);
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    for (PartialStudent partialStudent : partialStudents) {
+
+                        JSONObject studentOBJ = new JSONObject();
+
+                        try {
+                            studentOBJ.put("name", partialStudent.getName());
+                            studentOBJ.put("id", partialStudent.getId());
+                        } catch (Exception a) {
+                            a.printStackTrace();
+                        }
+
+                        students.put(studentOBJ);
+                    }
+
+                    try {
+                        cubicleObj.put("students", students);
+                        Log.i("OBJson##", cubicleObj.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    String respond = null;
+                    try {
+                        respond = new TokenRequester(token).makeRequest("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle/reserve", cubicleObj);
+                        Log.i("RESPOND##", respond);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    assert respond != null;
+                    if (respond.equals("true")) {
+                        break;
+                    }
+                }
             }
+
+            return null;
         }
     }
 
@@ -186,7 +269,7 @@ public class Cubicle {
             }
 
             if(jsonObject != null) {
-                setId(jsonObject.optString("id"));
+                setUniqueId(jsonObject.optString("uniqueId"));
                 setNumber(jsonObject.optString("number"));
                 setReserved_hour(Integer.parseInt(jsonObject.optString("reserved_hour")));
                 setDuration(jsonObject.optString("duration"));
@@ -218,7 +301,7 @@ public class Cubicle {
             JSONObject jsonObject = new TokenRequester(token).getObject("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle");
 
             if (jsonObject != null) {
-                setId(jsonObject.optString("id"));
+                setUniqueId(jsonObject.optString("uniqueId"));
                 setNumber(jsonObject.optString("number"));
                 setReserved_hour(Integer.parseInt(jsonObject.optString("reservedHour")));
                 setDuration(jsonObject.optString("duration"));
@@ -273,7 +356,6 @@ public class Cubicle {
         String jsonOBJ = "";
         JSONObject jsonObject= new JSONObject();
         try {
-            jsonObject.put("id", getId());
             jsonObject.put("number", getNumber());
             jsonObject.put("reserved_hour", getReserved_hour());
             jsonObject.put("duration", getDuration());
