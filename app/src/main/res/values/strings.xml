@@ -123,4 +123,8 @@
     <string name="prerequisites">Prerrequisito</string>
     <string name="cred_req">Req. Cred</string>
 
+    <!-- Signatures Programs Fragment -->
+
+    <string name="quarter_s">Trimeste</string>
+
 </resources>

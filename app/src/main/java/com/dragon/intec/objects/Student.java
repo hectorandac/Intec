@@ -28,6 +28,7 @@ public class Student{
     private String id;
     private String name;
     private String program;
+    private int programId;
     private String academicCondition;
     private String quarter;
     private String lastCondition;
@@ -105,6 +106,14 @@ public class Student{
         return alerts;
     }
 
+    public int getProgramId() {
+        return programId;
+    }
+
+    private void setProgramId(int programId) {
+        this.programId = programId;
+    }
+
     private Student setAlerts(String[] alerts) {
         this.alerts = alerts;
         return this;
@@ -135,22 +144,22 @@ public class Student{
         return this;
     }
 
-    public Student setQuarterIndex(double quarterIndex) {
+    private Student setQuarterIndex(double quarterIndex) {
         this.quarterIndex = quarterIndex;
         return this;
     }
 
-    public Student setLastCondition(String lastCondition) {
+    private Student setLastCondition(String lastCondition) {
         this.lastCondition = lastCondition;
         return this;
     }
 
-    public Student setQuarter(String quarter) {
+    private Student setQuarter(String quarter) {
         this.quarter = quarter;
         return this;
     }
 
-    public Student setAcademicCondition(String academic_condition) {
+    private Student setAcademicCondition(String academic_condition) {
         this.academicCondition = academic_condition;
         return this;
     }
@@ -235,6 +244,7 @@ public class Student{
                 setValidatedCredits(Integer.parseInt(jsonObject.optString("validatedCredits")));
                 setApprovedCredits(Integer.parseInt(jsonObject.optString("approvedCredits")));
                 setApprovedQuarters(Integer.parseInt(jsonObject.optString("quarterCount")));
+                setProgramId(jsonObject.optInt("programId"));
 
 
             } catch (Exception e) {
@@ -289,7 +299,7 @@ public class Student{
         }
     }
 
-    public void saveToJSON(Activity activity){
+    private void saveToJSON(Activity activity){
 
         String token = "";
         JSONObject jsonObject= new JSONObject();
@@ -305,26 +315,7 @@ public class Student{
             jsonObject.put("validated_credits", getValidatedCredits());
             jsonObject.put("approved_credits", getApprovedCredits());
             jsonObject.put("approved_quarters", getApprovedQuarters());
-
-            /*String[] vals = getAlerts();
-            JSONArray jsonArrayVal = new JSONArray();
-            for (String val : vals) {
-                jsonArrayVal.put(val);
-            }
-
-            jsonObject.put("alerts", jsonArrayVal);
-
-            String[][] signatures = getSignatures().getSignatures();
-            JSONArray jsonArraySignatures = new JSONArray();
-            for (String[] signature : signatures) {
-                JSONArray jsonArraySignature = new JSONArray();
-                for (String field : signature){
-                    jsonArraySignature.put(field);
-                }
-                jsonArraySignatures.put(jsonArraySignature);
-            }
-
-            jsonObject.put("signatures", jsonArraySignatures);*/
+            jsonObject.put("programId", getProgramId());
 
             token = jsonObject.toString();
             Log.i("USER_json", token);

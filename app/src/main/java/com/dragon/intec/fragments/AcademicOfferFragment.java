@@ -105,7 +105,6 @@ public class AcademicOfferFragment extends Fragment {
                 e.printStackTrace();
             }
 
-
             listDataHeader = getHeaders_Area(signatures);
             listDataChild = getHash(signatures, listDataHeader);
 

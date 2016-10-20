@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="#d5d5d5">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/signature_code"
+            android:layout_weight="0.2"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/signature_name"
+            android:layout_weight="0.7"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/signature_cr"
+            android:layout_weight="0.1"
+            android:textSize="10sp"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/signature_pre"
+            android:layout_weight="0.2"
+            android:textSize="10sp"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/signature_pre_cre"
+            android:layout_weight="0.1"
+            android:textSize="10sp"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:text="New Text"
+            android:id="@+id/signature_uri_pdf"
+            android:src="@drawable/ic_picture_as_pdf_black_24dp"
+            android:layout_weight="0.1"
+            android:textSize="10sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

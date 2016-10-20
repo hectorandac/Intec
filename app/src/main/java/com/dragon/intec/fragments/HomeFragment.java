@@ -21,6 +21,7 @@ import java.io.IOException;
 public class HomeFragment extends Fragment {
 
     LayoutInflater inflater;
+    Student student;
 
     public HomeFragment(){
         //required empty constructor
@@ -59,7 +60,7 @@ public class HomeFragment extends Fragment {
         protected Student doInBackground(Activity... params) {
 
             activity = params[0];
-            Student student = new Student(params[0]);
+            student = new Student(params[0]);
 
             try {
                 student.getData();

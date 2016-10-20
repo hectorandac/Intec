@@ -27,16 +27,18 @@ public class Signature {
     private String req_cred = "";
     private String uriPDF = "";
 
-    public Signature(String code, String name, String cr, String prerequisite, String req_cred, String quarter, String uriPDF) {
+    public Signature(String id, String code, String name, String cr, String prerequisite, String area, String req_cred, String uriPDF) {
+        this.id = id;
         this.code = code;
         this.name = name;
         this.cr = cr;
         this.prerequisite = prerequisite;
+        this.area = area;
         this.req_cred = req_cred;
         this.uriPDF = uriPDF;
     }
 
-    private Signature(){}
+    public Signature(){}
 
     public String getId() {
         return id;
