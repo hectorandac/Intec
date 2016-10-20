@@ -2,41 +2,73 @@ package com.dragon.intec.objects;/*
  * Created by HOME on 9/26/2016.
  */
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+
+import com.dragon.intec.components.TokenRequester;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class Signature {
 
+    private static final String keyToken = "TOKEN";
+
+    private String id = "";
     private String code = "";
-    private String signature = "";
+    private String name = "";
     private String cr = "";
     private String prerequisite = "";
+    private String area = "";
     private String req_cred = "";
-    private String quarter = "";
     private String uriPDF = "";
 
-    public Signature(String code, String signature, String cr, String prerequisite, String req_cred, String quarter, String uriPDF) {
+    public Signature(String code, String name, String cr, String prerequisite, String req_cred, String quarter, String uriPDF) {
         this.code = code;
-        this.signature = signature;
+        this.name = name;
         this.cr = cr;
         this.prerequisite = prerequisite;
         this.req_cred = req_cred;
-        this.quarter = quarter;
         this.uriPDF = uriPDF;
+    }
+
+    private Signature(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getCode() {
         return code;
     }
 
-    public Signature setCode(String code) {
+    private Signature setCode(String code) {
         this.code = code;
         return this;
     }
 
-    public String getSignature() {
-        return signature;
+    public String getName() {
+        return name;
     }
 
-    public Signature setSignature(String signature) {
-        this.signature = signature;
+    public Signature setName(String name) {
+        this.name = name;
         return this;
     }
 
@@ -67,15 +99,6 @@ public class Signature {
         return this;
     }
 
-    public String getQuarter() {
-        return quarter;
-    }
-
-    public Signature setQuarter(String quarter) {
-        this.quarter = quarter;
-        return this;
-    }
-
     public String getUriPDF() {
         return uriPDF;
     }
@@ -84,4 +107,32 @@ public class Signature {
         this.uriPDF = uriPDF;
         return this;
     }
+
+    public static ArrayList<Signature> getSignatures(Activity activity, String name) throws IOException, JSONException {
+
+        SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
+        String token = sharedPref.getString(keyToken, "");
+
+        ArrayList<Signature> signatures = new ArrayList<>();
+
+        JSONArray jsonSignatures = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/signature?name=" + name);
+        for(int i = 0; i < jsonSignatures.length(); i++){
+            JSONObject signature = jsonSignatures.getJSONObject(i);
+            Signature mySignature = new Signature();
+
+            mySignature.setId(signature.optString("id"));
+            mySignature.setCode(signature.optString("code"));
+            mySignature.setName(signature.optString("nameClass"));
+            mySignature.setArea(signature.optString("area"));
+            mySignature.setCr(signature.optString("cre"));
+            mySignature.setPrerequisite(signature.optString("preRequirements"));
+            mySignature.setReq_cred(signature.optString("preRequirementCredits"));
+            //(COMING SOON)mySignature.setUriPDF(signature.optString("uriPdf"));
+
+            signatures.add(mySignature);
+        }
+
+        return signatures;
+    }
+
 }

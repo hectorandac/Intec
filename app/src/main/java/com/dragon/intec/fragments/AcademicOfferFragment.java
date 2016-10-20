@@ -1,5 +1,6 @@
 package com.dragon.intec.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,13 +9,14 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.dragon.intec.R;
 import com.dragon.intec.objects.ClassRoom;
-import com.dragon.intec.objects.ClassRooms;
 import com.dragon.intec.objects.CustomAdapters.ExpandableListAdapterGroupe;
+import com.dragon.intec.objects.Signature;
 
 import org.json.JSONException;
 
@@ -25,15 +27,10 @@ import java.util.List;
 
 public class AcademicOfferFragment extends Fragment {
 
-    private ClassRooms classRooms = null;
+    ArrayList<Signature> signatures = new ArrayList<>();
 
-    private ExpandableListAdapter listAdapter;
-    private ExpandableListView expListView;
-
-    private List<ClassRoom> listDataHeader;
-    private HashMap<ClassRoom, ClassRooms> listDataChild;
-
-    private BottomSheetBehavior mBottomSheetBehavior;
+    View view;
+    private static BottomSheetBehavior<View> mBottomSheetBehavior;
 
     public AcademicOfferFragment() {
 
@@ -55,8 +52,10 @@ public class AcademicOfferFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        classRooms = new ClassRooms(getActivity(), null);
-        new getData().execute(classRooms);
+        this.view = view;
+        final Activity activity = getActivity();
+
+        new PrepareView().execute(activity, "");
 
         View bottomSheet = view.findViewById( R.id.bottom_sheet );
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -74,73 +73,84 @@ public class AcademicOfferFragment extends Fragment {
         });
 
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-    }
 
-    private void showOffers(ClassRooms classRooms) {
+        final TextView search = (TextView) view.findViewById(R.id.search_box);
+        View searchButton = view.findViewById(R.id.search_button);
 
-        // get the listview
-        if (expListView != null)
-            expListView = (ExpandableListView) getView().findViewById(R.id.exp_container);
-
-        // preparing list data
-        prepareData(classRooms);
-        listAdapter = new ExpandableListAdapterGroupe(getActivity(), listDataHeader, listDataChild);
-
-        // setting list adapter
-        expListView.setAdapter(listAdapter);
-
-    }
-
-    private void prepareData(ClassRooms classRoomsMain) {
-        listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<>();
-
-        ClassRooms classRooms = new ClassRooms(null, null);
-        classRooms.setClassRooms(classRoomsMain.getClassRooms());
-
-        while (classRooms.getClassRooms().size() > 0) {
-            String name = classRooms.getClassRooms().get(0).getArea();
-
-            ClassRooms result = classRooms.getByArea(name);
-
-            if(result.getClassRooms().size() > 0) {
-                listDataHeader.add(classRooms.getClassRooms().get(0));
-                listDataChild.put(classRooms.getClassRooms().get(0), result);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new PrepareView().execute(activity, search.getText().toString());
             }
-
-            for (ClassRoom c : result.getClassRooms()){
-                classRooms.removeClassRoom(c);
-            }
-
-        }
+        });
 
     }
 
-    private class getData extends AsyncTask<ClassRooms, Void, Boolean> {
+    private class PrepareView extends AsyncTask<Object, Void, Void>{
+
+        private Activity activity;
+        private HashMap<String, List<Signature>> listDataChild;
+        private List<String> listDataHeader;
 
         @Override
-        protected Boolean doInBackground(ClassRooms... classRoomses) {
+        protected Void doInBackground(Object... params) {
 
-            boolean available = false;
+            activity = (Activity) params[0];
+            String name = (String) params[1];
 
             try {
-                available = classRoomses[0].getData();
+                signatures = Signature.getSignatures(activity, name);
+                //classRooms = ClassRoom.getClassrooms(activity);
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
 
-            return available;
+
+            listDataHeader = getHeaders_Area(signatures);
+            listDataChild = getHash(signatures, listDataHeader);
+
+            return null;
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
 
-            if (aBoolean) {
-                showOffers(classRooms);
+            ExpandableListView expandableList = (ExpandableListView) view.findViewById(R.id.exp_container);
+            ExpandableListAdapterGroupe expandableListAdapterGroupe = new ExpandableListAdapterGroupe(activity, listDataHeader, listDataChild);
+            expandableList.setAdapter(expandableListAdapterGroupe);
+        }
+
+        private List<String> getHeaders_Area(ArrayList<Signature> signatures){
+
+            List<String> headings = new ArrayList<>();
+
+            for(Signature signature : signatures){
+                if(!headings.contains(signature.getArea())){
+                    headings.add(signature.getArea());
+                }
             }
 
+            return headings;
+        }
+
+        private HashMap<String, List<Signature>> getHash(ArrayList<Signature> signatures, List<String> headers){
+
+            HashMap<String, List<Signature>> hashMapRelation = new HashMap<>();
+
+            for(String header : headers){
+                List<Signature> tempSignatures = new ArrayList<>();
+                for (Signature signature : signatures){
+                    if(signature.getArea().equals(header)){
+                        tempSignatures.add(signature);
+                    }
+                }
+                hashMapRelation.put(header, tempSignatures);
+            }
+
+            return hashMapRelation;
         }
     }
+
 
 }

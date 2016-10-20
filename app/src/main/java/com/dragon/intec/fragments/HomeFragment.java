@@ -49,44 +49,6 @@ public class HomeFragment extends Fragment {
         new FillBlanks().execute(activity);
 
 
-        /*
-        LinearLayout linearLayout = (LinearLayout) mainView.findViewById(R.id.alerts_user);
-        String[] vals = student.getAlerts();
-        for (String val : vals) {
-            TextView textView = new TextView(activity);
-            textView.setText(val);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(0, 4, 0, 4);
-            textView.setLayoutParams(lp);
-            linearLayout.addView(textView);
-        }
-
-        String[][] signatures = student.getSignatures().getSignatures();
-        Log.i("ARRAY_signatures", signatures[0][0]);
-        for (String[] signature:signatures) {
-            LinearLayout listSignatures = (LinearLayout) mainView.findViewById(R.id.tab_signatures);
-            LinearLayout listElements = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.signature_layout, null);
-            for (int j = 0; j < listElements.getChildCount(); j++){
-                View v = listElements.getChildAt(j);
-                if (j == 11) {
-                    switch (signature[j]){
-                        case "true":
-                            ((CheckBox) v).setChecked(true);
-                            break;
-                        case "false":
-                            ((CheckBox) v).setChecked(false);
-                            break;
-                    }
-                }
-                else {
-                    ((TextView) v).setText(signature[j]);
-                }
-
-            }
-            listSignatures.addView(listElements);
-        }*/
-
-
     }
 
     private class FillBlanks extends AsyncTask<Activity, Void, Student> {

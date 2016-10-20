@@ -7,7 +7,9 @@
         android:id="@+id/class_room_list"
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider"
+        android:showDividers="middle">
 
 
 </LinearLayout>
