@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/id"
         android:layout_weight="0.3"
-        android:hint="@string/hint_id" />
+        android:hint="@string/hint_id"
+        android:inputType="number" />
 
     <ImageButton
         android:layout_width="wrap_content"

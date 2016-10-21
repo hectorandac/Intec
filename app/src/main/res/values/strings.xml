@@ -120,7 +120,7 @@
     <string name="code">Clave</string>
     <string name="signature">Asignatura</string>
     <string name="credits">CR</string>
-    <string name="prerequisites">Prerrequisito</string>
+    <string name="prerequisites">Requisito</string>
     <string name="cred_req">Req. Cred</string>
 
     <!-- Signatures Programs Fragment -->

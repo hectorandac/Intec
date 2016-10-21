@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.BottomSheetBehavior;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.dragon.intec.MainActivity;
 import com.dragon.intec.R;
 import com.dragon.intec.components.FileDownloader;
+import com.dragon.intec.fragments.SignaturesProgramsFragment;
 import com.dragon.intec.objects.ClassRoom;
 import com.dragon.intec.objects.ProgramPensum;
 import com.dragon.intec.objects.Signature;
@@ -109,10 +111,8 @@ public class ExpandableListPrograms extends BaseExpandableListAdapter {
         if(childPosition > 0) {
             final ProgramPensum.PensumSignature signature = (ProgramPensum.PensumSignature) getChild(groupPosition, childPosition);
 
-            if (convertView == null) {
-                LayoutInflater layoutInflater = (LayoutInflater) this._activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = layoutInflater.inflate(R.layout.expandable_list_child_program, null);
-            }
+            LayoutInflater layoutInflater = (LayoutInflater) this._activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = layoutInflater.inflate(R.layout.expandable_list_child_program, null);
 
             TextView code = (TextView) convertView.findViewById(R.id.signature_code);
             TextView name = (TextView) convertView.findViewById(R.id.signature_name);
@@ -130,12 +130,13 @@ public class ExpandableListPrograms extends BaseExpandableListAdapter {
             uriPDF.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new DownloadPdfShow().execute("file.pdf", "http://maven.apache.org/maven-1.x/maven.pdf");
+                    new DownloadPdfShow().execute("UCM1.pdf", "https://procesos.intec.edu.do/pdf/CBM101.pdf");
                 }
             });
 
         }else{
-
+            LayoutInflater layoutInflater = (LayoutInflater) this._activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = layoutInflater.inflate(R.layout.expandable_list_child_program_title, null);
         }
 
         return convertView;
@@ -146,32 +147,35 @@ public class ExpandableListPrograms extends BaseExpandableListAdapter {
         return false;
     }
 
-    private class DownloadPdfShow extends AsyncTask<Object, Void, Void>{
+    private class DownloadPdfShow extends AsyncTask<Object, Void, File>{
         @Override
-        protected Void doInBackground(Object... params) {
+        protected File doInBackground(Object... params) {
 
             String fileName = (String) params[0];
             String uri = (String) params[1];
 
-            String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-            File folder = new File(extStorageDirectory, "tempPdfINTEC");
-            folder.mkdir();
-
-            File pdfFile = new File(folder, fileName);
+            String fileDir = SignaturesProgramsFragment.myDir.getPath();
+            File pdfFile = new File(fileDir, fileName);
             try {
-                pdfFile.createNewFile();
+                new File(pdfFile.getPath()).delete();
+                if(pdfFile.createNewFile())
+                    Log.i("FILE##", "Created");
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             FileDownloader.downloadFile(uri, pdfFile);
+            return pdfFile;
+        }
 
-            return null;
+        @Override
+        protected void onPostExecute(File s) {
+            super.onPostExecute(s);
+            FileViewIntent(s);
         }
     }
 
-    public void FileViewIntent(String directory){
-        File pdfFile = new File(directory);  // -> filename = maven.pdf
+    public void FileViewIntent(File pdfFile){  // -> filename = maven.pdf
         Uri path = Uri.fromFile(pdfFile);
         Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
         pdfIntent.setDataAndType(path, "application/pdf");
@@ -180,7 +184,7 @@ public class ExpandableListPrograms extends BaseExpandableListAdapter {
         try{
             _activity.startActivity(pdfIntent);
         }catch(ActivityNotFoundException e){
-            Toast.makeText(_activity, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_activity, "No tienes aplicaciones para mostrar el PDF", Toast.LENGTH_SHORT).show();
         }
     }
 }

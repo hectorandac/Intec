@@ -8,16 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="#d5d5d5"
+        android:background="@drawable/divider"
         android:gravity="center">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="@string/tab_code"
             android:id="@+id/signature_code"
             android:layout_weight="0.2"
-            android:textSize="10sp" />
+            android:textSize="8sp" />
 
         <View
             android:layout_width="1dp"
@@ -28,10 +28,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="@string/signature"
             android:id="@+id/signature_name"
             android:layout_weight="0.7"
-            android:textSize="10sp" />
+            android:textSize="8sp" />
 
         <View
             android:layout_width="1dp"
@@ -42,10 +42,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="@string/credits"
             android:id="@+id/signature_cr"
             android:layout_weight="0.1"
-            android:textSize="10sp"/>
+            android:textSize="8sp"/>
 
         <View
             android:layout_width="1dp"
@@ -56,10 +56,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="@string/prerequisites"
             android:id="@+id/signature_pre"
             android:layout_weight="0.2"
-            android:textSize="10sp"/>
+            android:textSize="8sp"/>
 
         <View
             android:layout_width="1dp"
@@ -70,10 +70,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="@string/cred_req"
             android:id="@+id/signature_pre_cre"
             android:layout_weight="0.1"
-            android:textSize="10sp"/>
+            android:textSize="8sp"/>
 
         <View
             android:layout_width="1dp"
@@ -81,14 +81,13 @@
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray" />
 
-        <ImageButton
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="24dp"
             android:text="New Text"
             android:id="@+id/signature_uri_pdf"
             android:src="@drawable/ic_picture_as_pdf_black_24dp"
-            android:layout_weight="0.1"
-            android:textSize="10sp"/>
+            android:layout_weight="0.1"/>
 
     </LinearLayout>
 

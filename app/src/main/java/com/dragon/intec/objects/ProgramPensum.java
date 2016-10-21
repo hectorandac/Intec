@@ -59,7 +59,7 @@ public class ProgramPensum {
         SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
         String token = sharedPref.getString(keyToken, "");
 
-        JSONArray jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/program?id="+id);
+        JSONArray jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/pensum?id="+id);
         List<PensumSignature> pensumSignatures = new ArrayList<>();
         for(int i = 0; i < jsonArray.length(); i++){
             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -110,7 +110,7 @@ public class ProgramPensum {
                 }
             }
 
-            String heading = activity.getResources().getString(R.string.quarter_s) + index;
+            String heading = activity.getResources().getString(R.string.quarter_s) + " " + index;
             quarters.add(heading);
 
             hash.put(heading, pensumSignatures);

@@ -5,10 +5,16 @@
     android:layout_height="match_parent"
     tools:context="com.dragon.intec.fragments.PreselectionFragment">
 
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/frameLayout"
+        android:id="@+id/programs_list" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/design_textinput_error_color_dark"
+        android:background="#474747"
         android:padding="10dp"
         android:id="@+id/frameLayout">
 
@@ -16,15 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/program_selector"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:popupBackground="@drawable/back_popup_dark" />
     </FrameLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/frameLayout"
-        android:id="@+id/container_list"></LinearLayout>
 
 </RelativeLayout>

@@ -13,25 +13,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class FileDownloader {
-    private static final int  MEGABYTE = 1024 * 1024;
 
-    public static void downloadFile(String fileUrl, File directory){
+    public static void downloadFile(String fileURL, File directory){
         try {
-            URL url = new URL(fileUrl);
-            HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
-            urlConnection.connect();
 
-            InputStream inputStream = urlConnection.getInputStream();
-            FileOutputStream fileOutputStream = new FileOutputStream(directory);
-            int totalSize = urlConnection.getContentLength();
+            FileOutputStream f = new FileOutputStream(directory);
+            URL u = new URL(fileURL);
+            HttpURLConnection c = (HttpURLConnection) u.openConnection();
+            c.connect();
 
-            byte[] buffer = new byte[MEGABYTE];
-            int bufferLength = 0;
-            while((bufferLength = inputStream.read(buffer))>0 ){
-                fileOutputStream.write(buffer, 0, bufferLength);
+            InputStream in = c.getInputStream();
+
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = in.read(buffer)) > 0) {
+                f.write(buffer, 0, len1);
             }
-            fileOutputStream.close();
-        } catch (IOException e) {
+            f.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
