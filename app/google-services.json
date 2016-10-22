@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "442257466680",
+    "firebase_url": "https://intecapp-f907e.firebaseio.com",
+    "project_id": "intecapp-f907e",
+    "storage_bucket": "intecapp-f907e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442257466680:android:15d441733bd368df",
+        "android_client_info": {
+          "package_name": "com.dragon.intec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442257466680-h33n0e0p0bmm5j702qn53eba0639i6s6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALTYkUcB4echaE0mhjVX3NtXj1klobxdY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
