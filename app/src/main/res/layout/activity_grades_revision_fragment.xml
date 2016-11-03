@@ -6,5 +6,24 @@
     tools:context="com.dragon.intec.fragments.PreselectionFragment">
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/heading">
+
+        <LinearLayout
+            android:id="@+id/revision_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:divider="@drawable/divider"
+            android:showDividers="middle|end" />
+    </ScrollView>
+
+    <include
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/revision_layout_2" />
 
 </RelativeLayout>

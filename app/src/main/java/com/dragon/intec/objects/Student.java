@@ -276,6 +276,7 @@ public class Student{
                 String thu = jsonObjectSignature.optString("thursday");
                 String fri = jsonObjectSignature.optString("friday");
                 String sat = jsonObjectSignature.optString("saturday");
+                int grades = jsonObjectSignature.optInt("grades");
 
                 ClassRoom classRoom = new ClassRoom();
                 classRoom.setCode(code);
@@ -289,6 +290,10 @@ public class Student{
                 classRoom.setThu(thu.split("/"));
                 classRoom.setFri(fri.split("/"));
                 classRoom.setSat(sat.split("/"));
+
+                if(grades > 70) {
+                    classRoom.setGrades(grades + "");
+                }
 
                 classRooms.add(classRoom);
             }

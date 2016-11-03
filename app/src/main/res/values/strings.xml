@@ -127,4 +127,14 @@
 
     <string name="quarter_s">Trimeste</string>
 
+    <!-- Grades Revision Fragment -->
+
+    <string name="signature_rev">Asignatura</string>
+    <string name="grade_rev">Calif</string>
+    <string name="teacher_rev">Profesor/a</string>
+    <string name="timing_rev">Fecha Clave</string>
+    <string name="states_rev">Estados</string>
+
+    <string name="day_rev">dias</string>
+
 </resources>

@@ -6,12 +6,13 @@
     android:background="@color/colorPrimary">
 
     <TextView
-        android:text="TextView"
+        android:text="@string/signature_rev"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/textView30"
         android:layout_weight="0.3"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:gravity="center" />
 
     <View
         android:layout_width="1dp"
@@ -21,12 +22,13 @@
         android:background="@android:color/white" />
 
     <TextView
-        android:text="TextView"
+        android:text="@string/grade_rev"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/textView29"
         android:layout_weight="0.1"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:gravity="center" />
 
     <View
         android:layout_width="1dp"
@@ -36,12 +38,13 @@
         android:background="@android:color/white" />
 
     <TextView
-        android:text="TextView"
+        android:text="@string/teacher_rev"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/textView28"
         android:layout_weight="0.3"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:gravity="center" />
 
     <View
         android:layout_width="1dp"
@@ -51,12 +54,13 @@
         android:background="@android:color/white" />
 
     <TextView
-        android:text="TextView"
+        android:text="@string/timing_rev"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/textView27"
         android:layout_weight="0.2"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:gravity="center" />
 
     <View
         android:layout_width="1dp"
@@ -65,10 +69,13 @@
         android:layout_height="match_parent"
         android:background="@android:color/white" />
 
-    <FrameLayout
+    <TextView
+        android:text="@string/states_rev"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_weight="0.2" />
+        android:id="@+id/textView280"
+        android:layout_weight="0.2"
+        android:textColor="@android:color/white"
+        android:gravity="center" />
 
 </LinearLayout>

@@ -128,6 +128,7 @@ public class HomeFragment extends Fragment {
                     ((TextView) v.findViewById(R.id.signature_name)).setText(classRoom.getName());
                     ((TextView) v.findViewById(R.id.signature_sections)).setText(classRoom.getSec());
                     ((TextView) v.findViewById(R.id.signature_aula)).setText(classRoom.getRoom());
+                    ((TextView) v.findViewById(R.id.signature_grades)).setText(classRoom.getGrades());
 
 
                     try {

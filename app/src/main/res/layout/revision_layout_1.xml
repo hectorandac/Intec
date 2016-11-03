@@ -8,8 +8,11 @@
         android:text="TextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/textView30"
-        android:layout_weight="0.3" />
+        android:id="@+id/rev_signature"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:padding="2dp" />
 
     <View
         android:layout_width="1dp"
@@ -22,8 +25,11 @@
         android:text="TextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/textView29"
-        android:layout_weight="0.1"/>
+        android:id="@+id/rev_grade"
+        android:layout_weight="0.1"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:padding="2dp" />
 
     <View
         android:layout_width="1dp"
@@ -36,8 +42,11 @@
         android:text="TextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/textView28"
-        android:layout_weight="0.3" />
+        android:id="@+id/rev_teacher"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:padding="2dp" />
 
     <View
         android:layout_width="1dp"
@@ -50,8 +59,11 @@
         android:text="TextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/textView27"
-        android:layout_weight="0.2" />
+        android:id="@+id/rev_timing"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:padding="2dp" />
 
     <View
         android:layout_width="1dp"
@@ -63,7 +75,7 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
+        android:id="@+id/rev_state"
         android:layout_weight="0.2" />
 
 </LinearLayout>
