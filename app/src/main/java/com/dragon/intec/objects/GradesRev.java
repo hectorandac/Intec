@@ -5,6 +5,7 @@ package com.dragon.intec.objects;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.dragon.intec.components.TokenRequester;
 
@@ -24,13 +25,22 @@ public class GradesRev {
 
     private static final String keyToken = "TOKEN";
 
+    private int consultId;
     private String signature = "";
     private int grade = 0;
     private String teacher = "";
     private Date timing = null;
-    private String status = "";
+    private int status;
 
     public GradesRev() {
+    }
+
+    public int getConsultId() {
+        return consultId;
+    }
+
+    public void setConsultId(int consultId) {
+        this.consultId = consultId;
     }
 
     public String getSignature() {
@@ -65,11 +75,11 @@ public class GradesRev {
         this.timing = timing;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -86,14 +96,17 @@ public class GradesRev {
             GradesRev gradesRev = new GradesRev();
 
             String dateStr = jsonObject.optString("timing").replace('T', ' ');
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             Date date = sdf.parse(dateStr);
+
+            Log.i("DATE##", date.toString());
 
             gradesRev.setSignature(jsonObject.optString("signature"));
             gradesRev.setGrade(jsonObject.optInt("grade"));
             gradesRev.setTeacher(jsonObject.optString("teacher"));
             gradesRev.setTiming(date);
-            gradesRev.setStatus(jsonObject.optString("status"));
+            gradesRev.setStatus(jsonObject.optInt("status"));
+            gradesRev.setConsultId(jsonObject.optInt("consultId"));
 
             gradesRevs.add(gradesRev);
 

@@ -107,4 +107,18 @@ public class TokenRequester {
         httpost.setHeader("Content-type", "application/json");
         HttpResponse response = httpclient.execute(httpost);
     }
+
+    public String postObject(String url) throws IOException, JSONException {
+
+        HttpClient clientAlert = new DefaultHttpClient(new BasicHttpParams());
+        HttpPost httpGetAlert = new HttpPost(url);
+        httpGetAlert.addHeader("Authorization", token);
+        HttpResponse responseAlert = clientAlert.execute(httpGetAlert);
+
+        String object = EntityUtils.toString(responseAlert.getEntity());
+        Log.i("HEY&&S##", object);
+
+        return object;
+    }
+
 }
