@@ -1,12 +1,12 @@
 package com.dragon.intec;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,10 +35,10 @@ import com.dragon.intec.fragments.SignaturesProgramsFragment;
 import com.dragon.intec.fragments.TeacherEvaluationFragment;
 import com.dragon.intec.objects.Student;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     private static final String keyPosition = "POSITION";
     private static final String keyStudent = "STUDENT";
     private static final String keyToken = "TOKEN";
+    public static File myDir;
 
     public Student student;
 
@@ -62,6 +63,13 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        myDir = new File(Environment.getExternalStorageDirectory(), "Intec");
+        if (!myDir.exists()) {
+            if (!myDir.mkdirs()) {
+                Log.d("App", "failed to create directory");
+            }
+        }
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

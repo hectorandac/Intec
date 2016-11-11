@@ -2,12 +2,9 @@ package com.dragon.intec.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +13,12 @@ import android.widget.ExpandableListView;
 import android.widget.Spinner;
 
 import com.dragon.intec.R;
-import com.dragon.intec.components.TokenRequester;
 import com.dragon.intec.objects.CustomAdapters.ExpandableListPrograms;
 import com.dragon.intec.objects.ProgramPensum;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +26,6 @@ import java.util.List;
 public class SignaturesProgramsFragment extends Fragment {
 
     private static final String keyObject = "STUDENT";
-    public static File myDir;
 
     Integer[] arrayIds = null;
     View view;
@@ -57,13 +50,6 @@ public class SignaturesProgramsFragment extends Fragment {
 
         Activity activity = getActivity();
         this.view = view;
-
-        myDir = new File(Environment.getExternalStorageDirectory(), "Intec");
-        if (!myDir.exists()) {
-            if (!myDir.mkdirs()) {
-                Log.d("App", "failed to create directory");
-            }
-        }
 
         SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
         String user = sharedPref.getString(keyObject, "");

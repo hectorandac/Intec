@@ -9,32 +9,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.os.Handler;
-import android.support.design.widget.BottomSheetBehavior;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dragon.intec.MainActivity;
 import com.dragon.intec.R;
 import com.dragon.intec.components.FileDownloader;
-import com.dragon.intec.fragments.SignaturesProgramsFragment;
-import com.dragon.intec.objects.ClassRoom;
 import com.dragon.intec.objects.ProgramPensum;
-import com.dragon.intec.objects.Signature;
-
-import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -154,7 +144,7 @@ public class ExpandableListPrograms extends BaseExpandableListAdapter {
             String fileName = (String) params[0];
             String uri = (String) params[1];
 
-            String fileDir = SignaturesProgramsFragment.myDir.getPath();
+            String fileDir = MainActivity.myDir.getPath();
             File pdfFile = new File(fileDir, fileName);
             try {
                 new File(pdfFile.getPath()).delete();
@@ -175,7 +165,7 @@ public class ExpandableListPrograms extends BaseExpandableListAdapter {
         }
     }
 
-    public void FileViewIntent(File pdfFile){  // -> filename = maven.pdf
+    private void FileViewIntent(File pdfFile){
         Uri path = Uri.fromFile(pdfFile);
         Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
         pdfIntent.setDataAndType(path, "application/pdf");
