@@ -140,5 +140,14 @@
     <string name="request_rev">Solicitar</string>
     <string name="waiting_rev">En espera</string>
     <string name="accepted_rev">Aceptado</string>
+    
+    <!-- Reports fragment -->
+    
+    <string name="id_reports_f">ID:</string>
+    <string name="name_reports_f">Nombre:</string>
+    <string name="program_reports_f">Programa:</string>
+    <string name="report_1">Volante de Calificaciones Finales</string>
+    <string name="report_2">Volante Publicación de Medio Término</string>
+    <string name="generate_report">GENERAR</string>
 
 </resources>

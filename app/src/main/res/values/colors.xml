@@ -7,4 +7,5 @@
     <color name="heading_back">#eeeeee</color>
     <color name="availableField">#ef9a9a</color>
     <color name="notAvailableField">#bdbdbd</color>
+    <color name="backTitle">#bdbdbd</color>
 </resources>
