@@ -28,6 +28,7 @@ public class Student{
     private String id;
     private String name;
     private String program;
+    private String credits;
     private int programId;
     private String academicCondition;
     private String quarter;
@@ -106,12 +107,20 @@ public class Student{
         return alerts;
     }
 
-    public int getProgramId() {
+    private int getProgramId() {
         return programId;
     }
 
     private void setProgramId(int programId) {
         this.programId = programId;
+    }
+
+    public String getCredits() {
+        return credits;
+    }
+
+    public void setCredits(String credits) {
+        this.credits = credits;
     }
 
     private Student setAlerts(String[] alerts) {
@@ -245,7 +254,7 @@ public class Student{
                 setApprovedCredits(Integer.parseInt(jsonObject.optString("approvedCredits")));
                 setApprovedQuarters(Integer.parseInt(jsonObject.optString("quarterCount")));
                 setProgramId(jsonObject.optInt("programId"));
-
+                setCredits(jsonObject.optString("credits"));
 
             } catch (Exception e) {
                 e.printStackTrace();

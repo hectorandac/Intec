@@ -21,7 +21,7 @@ import java.io.IOException;
 public class HomeFragment extends Fragment {
 
     LayoutInflater inflater;
-    Student student;
+    public static Student student;
 
     public HomeFragment(){
         //required empty constructor

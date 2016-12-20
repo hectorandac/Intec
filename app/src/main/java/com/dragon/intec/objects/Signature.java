@@ -26,8 +26,9 @@ public class Signature {
     private String area = "";
     private String req_cred = "";
     private String uriPDF = "";
+    private int preSelectionType = -1;
 
-    public Signature(String id, String code, String name, String cr, String prerequisite, String area, String req_cred, String uriPDF) {
+    Signature(String id, String code, String name, String cr, String prerequisite, String area, String req_cred, String uriPDF) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -38,7 +39,15 @@ public class Signature {
         this.uriPDF = uriPDF;
     }
 
-    public Signature(){}
+    Signature(){}
+
+    public int getPreSelectionType() {
+        return preSelectionType;
+    }
+
+    public void setPreSelectionType(int preSelectionType) {
+        this.preSelectionType = preSelectionType;
+    }
 
     public String getId() {
         return id;
@@ -52,7 +61,7 @@ public class Signature {
         return area;
     }
 
-    public void setArea(String area) {
+    void setArea(String area) {
         this.area = area;
     }
 
@@ -60,7 +69,7 @@ public class Signature {
         return code;
     }
 
-    private Signature setCode(String code) {
+    Signature setCode(String code) {
         this.code = code;
         return this;
     }
@@ -78,7 +87,7 @@ public class Signature {
         return cr;
     }
 
-    public Signature setCr(String cr) {
+    Signature setCr(String cr) {
         this.cr = cr;
         return this;
     }
@@ -87,7 +96,7 @@ public class Signature {
         return prerequisite;
     }
 
-    public Signature setPrerequisite(String prerequisite) {
+    Signature setPrerequisite(String prerequisite) {
         this.prerequisite = prerequisite;
         return this;
     }
@@ -96,7 +105,7 @@ public class Signature {
         return req_cred;
     }
 
-    public Signature setReq_cred(String req_cred) {
+    Signature setReq_cred(String req_cred) {
         this.req_cred = req_cred;
         return this;
     }
@@ -135,6 +144,50 @@ public class Signature {
         }
 
         return signatures;
+    }
+
+    public static ArrayList<Signature> getSignaturesPreselection(Activity activity, String name) throws IOException, JSONException {
+
+        SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
+        String token = sharedPref.getString(keyToken, "");
+
+        ArrayList<Signature> signatures = new ArrayList<>();
+
+        JSONArray jsonSignatures = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/Preselection?name=" + name);
+        for(int i = 0; i < jsonSignatures.length(); i++){
+            JSONObject signature = jsonSignatures.getJSONObject(i);
+            Signature mySignature = new Signature();
+
+            mySignature.setId(signature.optString("id"));
+            mySignature.setCode(signature.optString("code"));
+            mySignature.setName(signature.optString("nameClass"));
+            mySignature.setArea(signature.optString("area"));
+            mySignature.setCr(signature.optString("cre"));
+            mySignature.setPrerequisite(signature.optString("preRequirements"));
+            mySignature.setReq_cred(signature.optString("preRequirementCredits"));
+            //(COMING SOON)mySignature.setUriPDF(signature.optString("uriPdf"));
+            mySignature.setPreSelectionType(signature.optInt("PreselectionType"));
+
+            signatures.add(mySignature);
+        }
+
+        return signatures;
+    }
+
+    public static Signature parseToSignature(JSONObject signature){
+        Signature mySignature = new Signature();
+
+        mySignature.setId(signature.optString("id"));
+        mySignature.setCode(signature.optString("code"));
+        mySignature.setName(signature.optString("nameClass"));
+        mySignature.setArea(signature.optString("area"));
+        mySignature.setCr(signature.optString("cre"));
+        mySignature.setPrerequisite(signature.optString("preRequirements"));
+        mySignature.setReq_cred(signature.optString("preRequirementCredits"));
+        //(COMING SOON)mySignature.setUriPDF(signature.optString("uriPdf"));
+        mySignature.setPreSelectionType(signature.optInt("type"));
+
+        return mySignature;
     }
 
 }

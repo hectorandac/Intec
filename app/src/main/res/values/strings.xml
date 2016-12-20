@@ -146,8 +146,39 @@
     <string name="id_reports_f">ID:</string>
     <string name="name_reports_f">Nombre:</string>
     <string name="program_reports_f">Programa:</string>
+    <string name="status_reports_f">Estado:</string>
+
+    <string name="convalidated_reports_f">Créditos Convalidados:</string>
+    <string name="aproved_reports_f">Créditos aprovados:</string>
+    <string name="credits_reports_f">Créditos programa:</string>
+    <string name="signatures_reports_f">Asignaturas aprovadas:</string>
+
     <string name="report_1">Volante de Calificaciones Finales</string>
     <string name="report_2">Volante Publicación de Medio Término</string>
+    <string name="report_3">Historial Académico</string>
+
     <string name="generate_report">GENERAR</string>
+
+    <!-- Selection / Preselection fragment -->
+
+    <string name="selection_heading">Materias del trimestre</string>
+    <string name="selection_title_1">Tipo</string>
+    <string name="selection_title_2">Sec.</string>
+    <string name="selection_title_3">Aula</string>
+    <string name="selection_title_4">Profesor</string>
+    <string name="selection_title_5">Lun</string>
+    <string name="selection_title_6">Mar</string>
+    <string name="selection_title_7">Mie</string>
+    <string name="selection_title_8">Jue</string>
+    <string name="selection_title_9">Vie</string>
+    <string name="selection_title_10">Sab</string>
+    <string name="selection_title_11">Cupo</string>
+    <string name="selection_title_12">Seleccionar</string>
+    <string name="selection_heading_2">Materias disponibles</string>
+    <string name="btn_1_selection">CANCELAR</string>
+    <string name="btn_2_selection">GUARDAR</string>
+    <string name="mayor_heading">Selección\nTrimestral</string>
+    <string name="mayor_heading_2">Preselección\nTrimestral</string>
+    <string name="minor_heading">SELECCIONAR</string>
 
 </resources>

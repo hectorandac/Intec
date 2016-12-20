@@ -32,6 +32,9 @@ public class ClassRoom {
     private String[] fri = new String[2];
     private String[] sat = new String[2];
     private String grades = "";
+    private int space = 0;
+    private String id_code_1 = "";
+    private String id_code_2 = "";
 
     private static final String keyToken = "TOKEN";
 
@@ -153,6 +156,30 @@ public class ClassRoom {
         return this;
     }
 
+    public String getId_code_1() {
+        return id_code_1;
+    }
+
+    public void setId_code_1(String id_code_1) {
+        this.id_code_1 = id_code_1;
+    }
+
+    public String getId_code_2() {
+        return id_code_2;
+    }
+
+    public void setId_code_2(String id_code_2) {
+        this.id_code_2 = id_code_2;
+    }
+
+    public int getSpace() {
+        return space;
+    }
+
+    private void setSpace(int space) {
+        this.space = space;
+    }
+
     public String getName() {
         return name;
     }
@@ -164,6 +191,17 @@ public class ClassRoom {
 
     public String fixedTime(String start, String end) {
         String returner = "";
+
+        if(start.length() > 0 && end.length() > 0)
+            returner = start + "/" + end;
+
+        return returner;
+    }
+
+    public static String fixedTime(String[] data) {
+        String returner = "";
+        String start = data[0];
+        String end = data[1];
 
         if(start.length() > 0 && end.length() > 0)
             returner = start + "/" + end;
@@ -209,6 +247,29 @@ public class ClassRoom {
         }
 
         return classrooms;
+    }
+
+    public static ClassRoom parseToClassRoom(JSONObject classroom){
+
+        ClassRoom myClassroom = new ClassRoom();
+
+        myClassroom.setId(classroom.optString("id"));
+        myClassroom.setType(classroom.optString("type"));
+        myClassroom.setCode(classroom.optString("code"));
+        myClassroom.setSec(classroom.optString("section"));
+        myClassroom.setRoom(classroom.optString("room"));
+        myClassroom.setTeacher(classroom.optString("teacher"));
+        myClassroom.setMon(timeToArray(classroom.optString("monday")));
+        myClassroom.setTue(timeToArray(classroom.optString("tuesday")));
+        myClassroom.setWed(timeToArray(classroom.optString("wednesday")));
+        myClassroom.setThu(timeToArray(classroom.optString("thursday")));
+        myClassroom.setFri(timeToArray(classroom.optString("friday")));
+        myClassroom.setSat(timeToArray(classroom.optString("saturday")));
+        myClassroom.setSpace(classroom.optInt("space"));
+        myClassroom.setId_code_1(classroom.optString("classId"));
+        myClassroom.setId_code_2(classroom.optString("classId_2"));
+
+        return myClassroom;
     }
 
 

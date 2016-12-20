@@ -18,8 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 
 /*
  * Created by hecto on 10/16/2016.
@@ -105,6 +103,23 @@ public class TokenRequester {
         httpost.setEntity(se);
         httpost.setHeader("Authorization", token);
         httpost.setHeader("Content-type", "application/json");
+        HttpResponse response = httpclient.execute(httpost);
+    }
+
+    public void postJSONArray(String url, JSONArray obj) throws IOException {
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        HttpPost httpost = new HttpPost(url);
+        StringEntity se = new StringEntity(obj.toString());
+        httpost.setEntity(se);
+        httpost.setHeader("Authorization", token);
+        httpost.setHeader("Content-type", "application/json");
+        HttpResponse response = httpclient.execute(httpost);
+    }
+
+    public void postNoneReturn(String url) throws IOException {
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        HttpPost httpost = new HttpPost(url);
+        httpost.setHeader("Authorization", token);
         HttpResponse response = httpclient.execute(httpost);
     }
 

@@ -5,15 +5,17 @@ package com.dragon.intec.components;
  */
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.dragon.intec.R;
+import com.dragon.intec.fragments.HomeFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +65,32 @@ public class InfoBuilder {
     public View createHeading(String text){
         Heading heading = new Heading(text);
         return heading.getHeading();
+    }
+
+    public View getTitleType_2() throws JSONException {
+        Title title = new Title(2, 0);
+        JSONObject heading = obj.getJSONObject("heading");
+        JSONArray rowsFields = heading.getJSONArray("fields");
+
+        ArrayList<String[]> rows = new ArrayList<>();
+        String[] headings_1 = {context.getResources().getString(R.string.convalidated_reports_f), String.valueOf(HomeFragment.student.getValidatedCredits())};
+        String[] headings_2 = {context.getResources().getString(R.string.aproved_reports_f), String.valueOf(HomeFragment.student.getApprovedCredits())};
+        String[] headings_3 = {context.getResources().getString(R.string.credits_reports_f), HomeFragment.student.getCredits()};
+        String[] headings_4 = {context.getResources().getString(R.string.signatures_reports_f), ""};
+
+        rows.add(headings_1);
+        rows.add(headings_2);
+        rows.add(headings_3);
+        rows.add(headings_4);
+
+        if(rowsFields.getString(3).equals("1")){
+            rows.get(3)[1] = "ACTIVO";
+        }else{
+            rows.get(3)[1] = "DESPLAZADO";
+        }
+
+        title.addFields(rows);
+        return title.getTitle();
     }
 
     private int pastCr = 0;
@@ -194,9 +222,15 @@ public class InfoBuilder {
             finalData[0] = secondaryData.get(i)[1];
             finalData[1] = secondaryData.get(i)[2];
             finalData[2] = secondaryData.get(i)[0];
-            finalData[3] = secondaryData.get(i)[5];
+
+            if(Double.parseDouble(secondaryData.get(i)[5]) < 0){
+                finalData[3] = 0 + "";
+            }else{
+                finalData[3] = secondaryData.get(i)[5];
+            }
+
             try {
-                finalData[4] = institutionalAlpha(equivalentInstitutional(Double.parseDouble(finalData[3])));
+                finalData[4] = institutionalAlpha(equivalentInstitutional(Double.parseDouble(secondaryData.get(i)[5])));
             }catch (Exception ex){
                 finalData[4] = "";
             }
@@ -346,6 +380,81 @@ public class InfoBuilder {
         return table.getTable();
     }
 
+    private int lab = 0;
+    private int teo = 0;
+    private int cre = 0;
+
+    public View createTableType_7 (String[] heading) throws JSONException {
+        String[] names = {"name",
+                "code",
+                "section",
+                "midG",
+                "baseG",
+                "credits",
+                "teacher"
+        };
+
+        ArrayList<String[]> data = new ArrayList<>();
+        ArrayList<String[]> secondaryData = new ArrayList<>();
+        data.add(heading);
+
+        JSONArray info = obj.getJSONArray("actuals");
+        for(int i = 0; i < info.length(); i++){
+            String[] values = new String[names.length];
+            JSONObject obj = info.getJSONObject(i);
+
+            if(obj.getString("type").equals("T")){
+                teo++;
+            }else{
+                lab++;
+            }
+
+            for(int j = 0; j < names.length; j++){
+                values[j] = obj.getString(names[j]);
+            }
+            secondaryData.add(values);
+        }
+
+        for(int i = 0; i < secondaryData.size(); i++){
+            String[] finalData = new String[heading.length];
+
+            finalData[0] = secondaryData.get(i)[1];
+            finalData[1] = secondaryData.get(i)[2];
+            finalData[2] = secondaryData.get(i)[0];
+            finalData[3] = secondaryData.get(i)[6];
+            finalData[4] = secondaryData.get(i)[5];
+            finalData[5] = secondaryData.get(i)[4];
+            finalData[6] = secondaryData.get(i)[3];
+
+            data.add(finalData);
+
+            try{
+                cre += Integer.parseInt(finalData[4]);
+            }catch (Exception ex){
+                cre += 0;
+            }
+
+        }
+
+        Table table = new Table(7);
+        table.setValues(data);
+        return table.getTable();
+    }
+
+    public View createTableType_8 (String[] heading) throws JSONException {
+        ArrayList<String[]> data = new ArrayList<>();
+        data.add(heading);
+
+        data.add(new String[]{"Asignaturas de Teoría", String.valueOf(teo)});
+        data.add(new String[]{"Laboratorios", String.valueOf(lab)});
+        data.add(new String[]{"Total Asignaturas", String.valueOf(teo + lab)});
+        data.add(new String[]{"Total Créditos", String.valueOf(cre)});
+
+        Table table = new Table(2, 0);
+        table.setValues(data);
+        return table.getTable();
+    }
+
     private class Table{
         private int columns;
         private int heading_2_index = -1;
@@ -475,7 +584,8 @@ public class InfoBuilder {
         }
 
         public View getTitle(){
-            TableLayout layout = (TableLayout) inflater.inflate(R.layout.info_builder_title, null).findViewById(R.id.main_view);
+            HorizontalScrollView main = (HorizontalScrollView) inflater.inflate(R.layout.info_builder_title, null);
+            TableLayout layout = (TableLayout) main.findViewById(R.id.main_view);
 
             for(String[] values : info){
                 TableRow field = new TableRow(context);
@@ -493,7 +603,7 @@ public class InfoBuilder {
                 layout.addView(field, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
             }
 
-            return layout;
+            return main;
         }
 
         private TextView createHeading(String text){
@@ -506,8 +616,7 @@ public class InfoBuilder {
         private TextView createValue(String text){
             TextView value = (TextView) inflater.inflate(R.layout.info_builder_title_field_value, null);
             value.setText(text);
-            value.setEllipsize(TextUtils.TruncateAt.END);
-            value.setMaxLines(1);
+            value.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             return value;
         }
     }
@@ -526,8 +635,10 @@ public class InfoBuilder {
             realVal = 2.0;
         else if (realVal >= 60)
             realVal = 1.0;
-        else
+        else if (realVal >= 0)
             realVal = 0.0;
+        else if (realVal < 0)
+            realVal = -1.0;
 
         return realVal;
     }
@@ -574,6 +685,10 @@ public class InfoBuilder {
             returner = "C";
         }else if(institutionalIndex >= 1){
             returner = "D";
+        }else if(institutionalIndex >= 0){
+            returner = "F";
+        }else if(institutionalIndex < 0){
+            returner = "R";
         }
 
         return returner;
