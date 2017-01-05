@@ -66,7 +66,7 @@ public class PreselectionFragment extends Fragment {
         final View view = dview;
 
         final Context context = getActivity();
-        Button confirmation = (Button) view.findViewById(R.id.selection);
+        ImageButton confirmation = (ImageButton) view.findViewById(R.id.selection);
 
         final RelativeLayout confirmation_l = (RelativeLayout) view.findViewById(R.id.confirmation);
 
@@ -176,7 +176,7 @@ public class PreselectionFragment extends Fragment {
             JSONArray jsonArray = null;
 
             try {
-                jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/Preselection");
+                jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/Preselection", "GET");
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -317,6 +317,7 @@ public class PreselectionFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+            @SuppressWarnings("ConstantConditions")
             ExpandableListView expandableList = (ExpandableListView) getView().findViewById(R.id.expandable_list_view);
             ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, activity, tableLayout, null);
             expandableList.setAdapter(expandableListAdapter);

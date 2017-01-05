@@ -4,15 +4,14 @@ package com.dragon.intec.components;
  */
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class FileDownloader {
+
+    //Downloads files from passed urls
 
     public static void downloadFile(String fileURL, File directory){
         try {
@@ -25,7 +24,7 @@ public class FileDownloader {
             InputStream in = c.getInputStream();
 
             byte[] buffer = new byte[1024];
-            int len1 = 0;
+            int len1;
             while ((len1 = in.read(buffer)) > 0) {
                 f.write(buffer, 0, len1);
             }

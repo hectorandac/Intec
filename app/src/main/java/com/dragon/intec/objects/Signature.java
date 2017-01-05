@@ -126,7 +126,7 @@ public class Signature {
 
         ArrayList<Signature> signatures = new ArrayList<>();
 
-        JSONArray jsonSignatures = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/signature?name=" + name);
+        JSONArray jsonSignatures = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/signature?name=" + name, "GET");
         for(int i = 0; i < jsonSignatures.length(); i++){
             JSONObject signature = jsonSignatures.getJSONObject(i);
             Signature mySignature = new Signature();
@@ -153,7 +153,7 @@ public class Signature {
 
         ArrayList<Signature> signatures = new ArrayList<>();
 
-        JSONArray jsonSignatures = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/Preselection?name=" + name);
+        JSONArray jsonSignatures = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/Preselection?name=" + name, "GET");
         for(int i = 0; i < jsonSignatures.length(); i++){
             JSONObject signature = jsonSignatures.getJSONObject(i);
             Signature mySignature = new Signature();

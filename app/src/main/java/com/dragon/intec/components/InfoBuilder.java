@@ -4,6 +4,7 @@ package com.dragon.intec.components;
  * Created by hecto on 11/19/2016.
  */
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,19 +28,22 @@ public class InfoBuilder {
     private Context context;
     private JSONObject obj;
     private LayoutInflater inflater;
-    private static int CENTER_GRAVITY = 17;
 
+    //Generates views that goes in the report fragment
+
+    //Class constructor
     public InfoBuilder(Context context, JSONObject obj){
         this.context = context;
         this.obj = obj;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    //Creates title element
     private Title createTitle(int columns, int headIndex){
-        Title title = new Title(columns, headIndex);
-        return title;
+        return new Title(columns, headIndex);
     }
 
+    //Creates title type 1
     public View getTitleType_1() throws JSONException {
         Title title = new Title(2, 0);
         JSONObject heading = obj.getJSONObject("heading");
@@ -62,11 +66,13 @@ public class InfoBuilder {
         return title.getTitle();
     }
 
+    //Creates heading return the view
     public View createHeading(String text){
         Heading heading = new Heading(text);
         return heading.getHeading();
     }
 
+    //Creates title type 2
     public View getTitleType_2() throws JSONException {
         Title title = new Title(2, 0);
         JSONObject heading = obj.getJSONObject("heading");
@@ -104,6 +110,7 @@ public class InfoBuilder {
 
     private String observation = "";
 
+    //Creates table type 1
     public View createTableType_1(String[] heading) throws JSONException {
         ArrayList<String[]> data = new ArrayList<>();
         data.add(heading);
@@ -250,6 +257,7 @@ public class InfoBuilder {
         return table.getTable();
     }
 
+    @SuppressLint("DefaultLocale")
     public View createTableType_3 (String[] heading) throws JSONException{
         ArrayList<String[]> data = new ArrayList<>();
         data.add(heading);
@@ -455,6 +463,7 @@ public class InfoBuilder {
         return table.getTable();
     }
 
+    @SuppressWarnings("deprecation")
     private class Table{
         private int columns;
         private int heading_2_index = -1;
@@ -516,6 +525,7 @@ public class InfoBuilder {
         private TextView createValue(String text){
             TextView value = (TextView) inflater.inflate(R.layout.info_builder_title_field_value, null);
             value.setText(text);
+            int CENTER_GRAVITY = 17;
             value.setGravity(CENTER_GRAVITY);
             return value;
         }
@@ -536,6 +546,7 @@ public class InfoBuilder {
 
     }
 
+    @SuppressWarnings("deprecation")
     private class Title {
         private int columnsCount;
         private int rowsCount;

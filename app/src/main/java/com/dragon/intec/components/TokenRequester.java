@@ -23,6 +23,7 @@ import java.io.IOException;
  * Created by hecto on 10/16/2016.
  */
 
+@SuppressWarnings("deprecation")
 public class TokenRequester {
 
     private String token = "";
@@ -31,7 +32,7 @@ public class TokenRequester {
         this.token = token;
     }
 
-    public JSONObject getObject(String url) throws IOException, JSONException {
+    public JSONObject getJSONObject(String url) throws IOException, JSONException {
 
         HttpClient client = new DefaultHttpClient(new BasicHttpParams());
         HttpGet httpGet = new HttpGet(url);
@@ -49,7 +50,17 @@ public class TokenRequester {
         return returner;
     }
 
-    public JSONArray getArray(String url) throws IOException, JSONException {
+    public  JSONArray getArray(String url, String type) throws IOException, JSONException {
+        if(type.toUpperCase().equals("GET")){
+            return getArray_1(url);
+        }else if(type.toUpperCase().equals("POST")){
+            return getArray_2(url);
+        }else {
+            return null;
+        }
+    }
+
+    private JSONArray getArray_1(String url) throws IOException, JSONException {
 
         HttpClient clientAlert = new DefaultHttpClient(new BasicHttpParams());
         HttpGet httpGetAlert = new HttpGet(url);
@@ -57,11 +68,10 @@ public class TokenRequester {
         HttpResponse responseAlert = clientAlert.execute(httpGetAlert);
 
         String array = EntityUtils.toString(responseAlert.getEntity());
-
         return new JSONArray(array);
     }
 
-    public JSONArray postGetArray(String url) throws IOException, JSONException {
+    private JSONArray getArray_2(String url) throws IOException, JSONException {
 
         HttpClient clientAlert = new DefaultHttpClient(new BasicHttpParams());
         HttpPost httpGetAlert = new HttpPost(url);
@@ -86,24 +96,23 @@ public class TokenRequester {
         return EntityUtils.toString(response.getEntity());
     }
 
-    public Bitmap getUserProfile(String url) throws IOException, JSONException {
+    public Bitmap getImageFromUrl(String url, String optStr) throws IOException, JSONException {
 
-        JSONObject obj = getObject(url);
-        String imageByteArray = obj.optString("image");
+        JSONObject obj = getJSONObject(url);
+        String imageByteArray = obj.optString(optStr);
         byte[] byteArray = Base64.decode(imageByteArray, Base64.DEFAULT);
-        //Bitmap bitmap = Bitmap.createScaledBitmap(bmp1, 120, 120, false);
 
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 
-    public void cancelCubicleRequest(String url, JSONObject obj) throws IOException {
+    public void postJSONObject(String url, JSONObject obj) throws IOException {
         DefaultHttpClient httpclient = new DefaultHttpClient();
         HttpPost httpost = new HttpPost(url);
         StringEntity se = new StringEntity(obj.toString());
         httpost.setEntity(se);
         httpost.setHeader("Authorization", token);
         httpost.setHeader("Content-type", "application/json");
-        HttpResponse response = httpclient.execute(httpost);
+        httpclient.execute(httpost);
     }
 
     public void postJSONArray(String url, JSONArray obj) throws IOException {
@@ -113,14 +122,14 @@ public class TokenRequester {
         httpost.setEntity(se);
         httpost.setHeader("Authorization", token);
         httpost.setHeader("Content-type", "application/json");
-        HttpResponse response = httpclient.execute(httpost);
+        httpclient.execute(httpost);
     }
 
     public void postNoneReturn(String url) throws IOException {
         DefaultHttpClient httpclient = new DefaultHttpClient();
         HttpPost httpost = new HttpPost(url);
         httpost.setHeader("Authorization", token);
-        HttpResponse response = httpclient.execute(httpost);
+        httpclient.execute(httpost);
     }
 
     public String postObject(String url) throws IOException, JSONException {

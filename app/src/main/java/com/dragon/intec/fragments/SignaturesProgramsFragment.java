@@ -73,7 +73,7 @@ public class SignaturesProgramsFragment extends Fragment {
     }
 
 
-    HashMap<String, List<ProgramPensum.PensumSignature>> hashMap;
+    HashMap<String, List<ProgramPensum.PensSignature>> hashMap;
     List<String> indexQuarter;
 
     private class ShowData extends AsyncTask<Object, Void, Void>{

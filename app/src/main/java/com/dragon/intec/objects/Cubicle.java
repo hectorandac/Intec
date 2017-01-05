@@ -14,26 +14,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class Cubicle {
 
     private static final String keyToken = "TOKEN";
     private static final String keyObject = "CUBICLE";
-    private static final String keyStudent = "STUDENT";
 
     private String uniqueId = "";
     private String number = "";
     private int reserved_hour = 0;
     private String duration = "";
-    private String location = "";
     private String status = "";
     private ArrayList<PartialStudent> students = new ArrayList<>();
 
@@ -47,7 +39,7 @@ public class Cubicle {
         return status;
     }
 
-    public void setStatus(String status) {
+    private void setStatus(String status) {
         this.status = status;
     }
 
@@ -55,7 +47,7 @@ public class Cubicle {
         return duration;
     }
 
-    public Cubicle setDuration(String duration) {
+    private Cubicle setDuration(String duration) {
         this.duration = duration;
         return this;
     }
@@ -64,7 +56,7 @@ public class Cubicle {
         return number;
     }
 
-    public Cubicle setNumber(String number) {
+    private Cubicle setNumber(String number) {
         this.number = number;
         return this;
     }
@@ -73,7 +65,7 @@ public class Cubicle {
         return reserved_hour;
     }
 
-    public Cubicle setReserved_hour(int reserved_hour) {
+    private Cubicle setReserved_hour(int reserved_hour) {
         this.reserved_hour = reserved_hour;
         return this;
     }
@@ -82,34 +74,21 @@ public class Cubicle {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId) {
+    private void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public Cubicle setLocation(String location) {
-        this.location = location;
-        return this;
+    private String getLocation() {
+        return "";
     }
 
     public ArrayList<PartialStudent> getStudents() {
         return students;
     }
 
-    public Cubicle setStudents(ArrayList<PartialStudent> students) {
+    private Cubicle setStudents(ArrayList<PartialStudent> students) {
         this.students = students;
         return this;
-    }
-
-    public void addStudent (PartialStudent student){
-        students.add(student);
-    }
-
-    public void removeStudent (PartialStudent student){
-        students.remove(student);
     }
 
     public Cubicle[] availableList() throws IOException, JSONException {
@@ -119,7 +98,7 @@ public class Cubicle {
         SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
         String token = sharedPref.getString(keyToken, "");
 
-        JSONArray jsonArray = new TokenRequester(token).postGetArray("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle/availability");
+        JSONArray jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle/availability", "POST");
 
         for (int obj = 0; obj < jsonArray.length(); obj++) {
             JSONObject object = jsonArray.getJSONObject(obj);
@@ -196,9 +175,9 @@ public class Cubicle {
                     }
 
                     JSONArray students = new JSONArray();
-                    JSONObject jsonObject = null;
+                    JSONObject jsonObject;
                     try {
-                        jsonObject = new TokenRequester(token).getObject("http://angularjsauthentication20161012.azurewebsites.net/api/user");
+                        jsonObject = new TokenRequester(token).getJSONObject("http://angularjsauthentication20161012.azurewebsites.net/api/user");
                         JSONObject studentMainOBJ = new JSONObject();
 
                         studentMainOBJ.put("name", jsonObject.optString("nameMain"));
@@ -252,106 +231,44 @@ public class Cubicle {
 
     public boolean getData() throws IOException, JSONException {
 
-        boolean internetConnection = true;
         boolean returner = false;
 
-        if(!internetConnection){
+        SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
+        String token = sharedPref.getString(keyToken, "");
 
-            //saveToJSONTEST(activity);
+        JSONObject jsonObject = new TokenRequester(token).getJSONObject("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle");
 
-            SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-            String jsonOBJ = sharedPref.getString(keyObject, "");
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = new JSONObject(jsonOBJ);
-            } catch (JSONException e) {
-                e.printStackTrace();
+        if (jsonObject != null) {
+            setUniqueId(jsonObject.optString("uniqueId"));
+            setNumber(jsonObject.optString("number"));
+            setReserved_hour(Integer.parseInt(jsonObject.optString("reservedHour")));
+            setDuration(jsonObject.optString("duration"));
+            setStatus(jsonObject.optString("status"));
+
+            ArrayList<PartialStudent> students = new ArrayList<>();
+            JSONArray jsonArray = jsonObject.getJSONArray("students");
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                JSONObject jsonStudentPartial = jsonArray.getJSONObject(i);
+
+                String id = jsonStudentPartial.optString("id");
+                String name = jsonStudentPartial.optString("name");
+
+                PartialStudent studentPartial = new PartialStudent(id, name);
+                students.add(studentPartial);
             }
 
-            if(jsonObject != null) {
-                setUniqueId(jsonObject.optString("uniqueId"));
-                setNumber(jsonObject.optString("number"));
-                setReserved_hour(Integer.parseInt(jsonObject.optString("reserved_hour")));
-                setDuration(jsonObject.optString("duration"));
-                setLocation(jsonObject.optString("location"));
+            setStudents(students);
 
-                ArrayList<PartialStudent> students = new ArrayList<>();
-                JSONArray jsonArray = jsonObject.getJSONArray("students");
-                for (int i = 0; i < jsonArray.length(); i++) {
-
-                    JSONObject jsonStudentPartial = jsonArray.getJSONObject(i);
-
-                    String id = jsonStudentPartial.optString("id");
-                    String name = jsonStudentPartial.optString("name");
-
-                    PartialStudent studentPartial = new PartialStudent(id, name);
-                    students.add(studentPartial);
-                }
-
-                setStudents(students);
-                returner = true;
-            }
-
-
-        }else{
-
-            SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
-            String token = sharedPref.getString(keyToken, "");
-
-            JSONObject jsonObject = new TokenRequester(token).getObject("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle");
-
-            if (jsonObject != null) {
-                setUniqueId(jsonObject.optString("uniqueId"));
-                setNumber(jsonObject.optString("number"));
-                setReserved_hour(Integer.parseInt(jsonObject.optString("reservedHour")));
-                setDuration(jsonObject.optString("duration"));
-                setStatus(jsonObject.optString("status"));
-
-                ArrayList<PartialStudent> students = new ArrayList<>();
-                JSONArray jsonArray = jsonObject.getJSONArray("students");
-                for (int i = 0; i < jsonArray.length(); i++) {
-
-                    JSONObject jsonStudentPartial = jsonArray.getJSONObject(i);
-
-                    String id = jsonStudentPartial.optString("id");
-                    String name = jsonStudentPartial.optString("name");
-
-                    PartialStudent studentPartial = new PartialStudent(id, name);
-                    students.add(studentPartial);
-                }
-
-                setStudents(students);
-
-                //Then save it
-                saveToJSON(activity);
-                returner = true;
-            }
+            //Then save it
+            saveToJSON(activity);
+            returner = true;
         }
 
         return returner;
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
-        try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            String jsonText = readAll(rd);
-            return new JSONObject(jsonText);
-        } finally {
-            is.close();
-        }
-    }
-
-    private static String readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-            sb.append((char) cp);
-        }
-        return sb.toString();
-    }
-
-    public void saveToJSON(Activity activity){
+    private void saveToJSON(Activity activity){
 
         String jsonOBJ = "";
         JSONObject jsonObject= new JSONObject();

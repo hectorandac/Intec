@@ -6,7 +6,6 @@ package com.dragon.intec.objects;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 
 import com.dragon.intec.R;
 import com.dragon.intec.components.TokenRequester;
@@ -24,7 +23,7 @@ public class ProgramPensum {
 
     int id;
     String name = "";
-    Activity activity;
+    private Activity activity;
 
     private static final String keyToken = "TOKEN";
 
@@ -32,18 +31,18 @@ public class ProgramPensum {
         this.activity = activity;
     }
 
-    public class PensumSignature extends Signature{
+    public class PensSignature extends Signature{
 
         private int quarterIndex = 0;
 
-        public PensumSignature(String id, String code, String name, String cr, String prerequisite, String area, String req_cred, String uriPDF, int quarterIndex) {
+        PensSignature(String id, String code, String name, String cr, String prerequisite, String area, String req_cred, String uriPDF, int quarterIndex) {
             super(id, code, name, cr, prerequisite, area, req_cred, uriPDF);
 
             this.quarterIndex = quarterIndex;
 
         }
 
-        public PensumSignature(){}
+        PensSignature(){}
 
         int getQuarterIndex() {
             return quarterIndex;
@@ -54,16 +53,16 @@ public class ProgramPensum {
         }
     }
 
-    public HashMap<String, List<PensumSignature>> getPensum(int id) throws IOException, JSONException {
+    public HashMap<String, List<PensSignature>> getPensum(int id) throws IOException, JSONException {
 
         SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
         String token = sharedPref.getString(keyToken, "");
 
-        JSONArray jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/pensum?id="+id);
-        List<PensumSignature> pensumSignatures = new ArrayList<>();
+        JSONArray jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/pensum?id="+id, "GET");
+        List<PensSignature> pensSignatures = new ArrayList<>();
         for(int i = 0; i < jsonArray.length(); i++){
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            PensumSignature pensumSignature = new PensumSignature(jsonObject.optString("id"),
+            PensSignature pensSignature = new PensSignature(jsonObject.optString("id"),
                     jsonObject.optString("code"),
                     jsonObject.optString("nameClass"),
                     jsonObject.optString("cre"),
@@ -73,20 +72,20 @@ public class ProgramPensum {
                     jsonObject.optString("uriPdf"),
                     jsonObject.optInt("quarterIndex"));
 
-            pensumSignatures.add(pensumSignature);
+            pensSignatures.add(pensSignature);
         }
 
-        List<Integer> indexQuarters = getIndexes(pensumSignatures);
-        return createHash(indexQuarters, pensumSignatures);
+        List<Integer> indexQuarters = getIndexes(pensSignatures);
+        return createHash(indexQuarters, pensSignatures);
     }
 
-    private List<Integer> getIndexes(List<PensumSignature> pensumSignatures){
+    private List<Integer> getIndexes(List<PensSignature> pensSignatures){
 
         List<Integer> indexes = new ArrayList<>();
 
-        for(PensumSignature pensumSignature : pensumSignatures){
-            if(!indexes.contains(pensumSignature.getQuarterIndex())){
-                indexes.add(pensumSignature.getQuarterIndex());
+        for(PensSignature pensSignature : pensSignatures){
+            if(!indexes.contains(pensSignature.getQuarterIndex())){
+                indexes.add(pensSignature.getQuarterIndex());
             }
         }
 
@@ -95,25 +94,25 @@ public class ProgramPensum {
 
     public List<String> quarters = new ArrayList<>();
 
-    private HashMap<String, List<PensumSignature>> createHash(List<Integer> indexes, List<PensumSignature> map){
-        HashMap<String, List<PensumSignature>> hash = new HashMap<>();
+    private HashMap<String, List<PensSignature>> createHash(List<Integer> indexes, List<PensSignature> map){
+        HashMap<String, List<PensSignature>> hash = new HashMap<>();
 
         for(Integer index : indexes){
 
-            List<PensumSignature> pensumSignatures = new ArrayList<>();
-            PensumSignature titlePensum = new PensumSignature();
-            pensumSignatures.add(titlePensum);
+            List<PensSignature> pensSignatures = new ArrayList<>();
+            PensSignature titlePensum = new PensSignature();
+            pensSignatures.add(titlePensum);
 
-            for(PensumSignature pensumSignature : map){
-                if(pensumSignature.getQuarterIndex() == index){
-                    pensumSignatures.add(pensumSignature);
+            for(PensSignature pensSignature : map){
+                if(pensSignature.getQuarterIndex() == index){
+                    pensSignatures.add(pensSignature);
                 }
             }
 
             String heading = activity.getResources().getString(R.string.quarter_s) + " " + index;
             quarters.add(heading);
 
-            hash.put(heading, pensumSignatures);
+            hash.put(heading, pensSignatures);
 
         }
 

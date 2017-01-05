@@ -169,9 +169,9 @@ public class MainActivity extends AppCompatActivity
 
             try {
 
-                JSONObject jsonObject = new TokenRequester(token).getObject("http://angularjsauthentication20161012.azurewebsites.net/api/user");
+                JSONObject jsonObject = new TokenRequester(token).getJSONObject("http://angularjsauthentication20161012.azurewebsites.net/api/user");
                 name = jsonObject.optString("nameMain");
-                picture = new TokenRequester(token).getUserProfile("http://angularjsauthentication20161012.azurewebsites.net/api/Image");
+                picture = new TokenRequester(token).getImageFromUrl("http://angularjsauthentication20161012.azurewebsites.net/api/Image", "image");
                 email = jsonObject.optString("id") + "@est.intec.edu.do";
 
             } catch (IOException | JSONException e) {

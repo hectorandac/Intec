@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     tools:context="com.dragon.intec.fragments.SelectionFragment">
 
@@ -19,7 +20,8 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                tools:ignore="UselessParent">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -41,7 +43,7 @@
                             android:minHeight="0dp"
                             android:minWidth="0dp"
                             android:padding="10dp"
-                            android:layout_gravity="right" />
+                            android:layout_gravity="end" />
 
                         <TextView
                             android:text="@string/selection_heading"
@@ -63,7 +65,7 @@
                             android:minHeight="0dp"
                             android:minWidth="0dp"
                             android:padding="10dp"
-                            android:layout_gravity="left" />
+                            android:layout_gravity="start" />
                     </FrameLayout>
 
                     <HorizontalScrollView
@@ -76,7 +78,6 @@
                             android:id="@+id/values_holder"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_centerHorizontal="true"
                             android:divider="@drawable/divider"
                             android:showDividers="middle|end">
 
@@ -95,7 +96,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                tools:ignore="UselessParent">
 
                 <TextView
                     android:text="@string/selection_heading_2"
@@ -115,7 +117,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:orientation="horizontal"
-                    android:gravity="right|end"
+                    android:gravity="end"
                     android:foregroundGravity="right" />
 
                 <View
@@ -158,28 +160,35 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:id="@+id/confirmation">
 
         <TextView
             android:text="@string/mayor_heading_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView64"
-            android:gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
             android:textColor="@android:color/white"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:textAllCaps="false"
+            android:textStyle="bold"
             android:textSize="50sp" />
 
-        <Button
-            android:text="@string/minor_heading"
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView64"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="64dp"
-            android:id="@+id/selection" />
+            app:srcCompat="@drawable/ic_arrow_forward_white_48dp"
+            android:background="@drawable/back_blck_btn"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="50dp"
+            android:id="@+id/selection"
+            tools:ignore="ContentDescription" />
 
     </RelativeLayout>
 

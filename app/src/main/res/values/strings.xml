@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Intec</string>
 
     <!-- Log in activity -->
@@ -98,7 +98,7 @@
     
     <string name="quarter_calendar">Calendario trimestral</string>
     <string name="selection_calendar">Calendario selección</string>
-    <string name="annual_calendar">Calendario anual</string>
+    <string name="annual_calendar" tools:ignore="Typos">Calendario anual</string>
     <string name="finance_calendar">Calendario finaciero</string>
     <string name="calendar">Calendario</string>
 
@@ -107,7 +107,7 @@
     <string name="type">Tipo</string>
     <string name="sec">Sec</string>
     <string name="room">Aula</string>
-    <string name="teacher">Profesor</string>
+    <string name="teacher" tools:ignore="Typos">Profesor</string>
     <string name="mon">lun</string>
     <string name="tue">Mar</string>
     <string name="wed">Mie</string>
@@ -131,7 +131,7 @@
 
     <string name="signature_rev">Asignatura</string>
     <string name="grade_rev">Calif</string>
-    <string name="teacher_rev">Profesor/a</string>
+    <string name="teacher_rev" tools:ignore="Typos">Profesor/a</string>
     <string name="timing_rev">Fecha Clave</string>
     <string name="states_rev">Estados</string>
 
@@ -165,7 +165,7 @@
     <string name="selection_title_1">Tipo</string>
     <string name="selection_title_2">Sec.</string>
     <string name="selection_title_3">Aula</string>
-    <string name="selection_title_4">Profesor</string>
+    <string name="selection_title_4" tools:ignore="Typos">Profesor</string>
     <string name="selection_title_5">Lun</string>
     <string name="selection_title_6">Mar</string>
     <string name="selection_title_7">Mie</string>
@@ -180,5 +180,10 @@
     <string name="mayor_heading">Selección\nTrimestral</string>
     <string name="mayor_heading_2">Preselección\nTrimestral</string>
     <string name="minor_heading">SELECCIONAR</string>
+
+    <!-- Retire fragment-->
+
+    <string name="retire_heading">Retiro de Materias</string>
+    <string name="retire_mat">Retirar</string>
 
 </resources>

@@ -39,7 +39,7 @@ public class GradesRev {
         return consultId;
     }
 
-    public void setConsultId(int consultId) {
+    private void setConsultId(int consultId) {
         this.consultId = consultId;
     }
 
@@ -55,7 +55,7 @@ public class GradesRev {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    private void setGrade(int grade) {
         this.grade = grade;
     }
 
@@ -71,7 +71,7 @@ public class GradesRev {
         return timing;
     }
 
-    public void setTiming(Date timing) {
+    private void setTiming(Date timing) {
         this.timing = timing;
     }
 
@@ -79,7 +79,7 @@ public class GradesRev {
         return status;
     }
 
-    public void setStatus(int status) {
+    private void setStatus(int status) {
         this.status = status;
     }
 
@@ -88,7 +88,7 @@ public class GradesRev {
         SharedPreferences sharedPref = activity.getSharedPreferences("token", 0);
         String token = sharedPref.getString(keyToken, "");
 
-        JSONArray jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/GradesRev");
+        JSONArray jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/GradesRev", "GET");
 
         List<GradesRev> gradesRevs = new ArrayList<>();
         for(int i = 0; i < jsonArray.length(); i++){

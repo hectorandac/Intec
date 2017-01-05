@@ -42,7 +42,8 @@
                 android:id="@+id/imageView"
                 android:src="@drawable/logo_intec"
                 android:scaleType="fitCenter"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                tools:ignore="ContentDescription" />
 
             <EditText
                 android:layout_width="fill_parent"
@@ -59,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
-                android:id="@+id/password_text"
+                android:id="@+id/password_text_r"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:hint="@string/password"/>
@@ -88,14 +89,16 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            tools:ignore="UselessParent">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:id="@+id/imageView2"
                 android:layout_gravity="center"
-                android:src="@drawable/logo_intec_load" />
+                android:src="@drawable/logo_intec_load"
+                tools:ignore="ContentDescription" />
 
             <ProgressBar
                 style="?android:attr/progressBarStyleLarge"

@@ -70,7 +70,7 @@ public class LogInActivity extends AppCompatActivity {
 
         //Manage the edit text fields for the password and the id of the user
         EditText id = (EditText) findViewById(R.id.id_text);
-        EditText password = (EditText) findViewById(R.id.password_text);
+        EditText password = (EditText) findViewById(R.id.password_text_r);
 
         String idText = id.getText().toString();
         String passwordText = password.getText().toString();

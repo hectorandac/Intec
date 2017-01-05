@@ -1,5 +1,6 @@
 package com.dragon.intec.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TableLayout;
@@ -43,6 +45,7 @@ public class SelectionFragment extends Fragment {
 
     private static final String keyToken = "TOKEN";
     public static BottomSheetBehavior<View> mBottomSheetBehavior;
+    @SuppressLint("StaticFieldLeak")
     public static View bottomSheet;
     private TableLayout tableLayout = null;
 
@@ -68,7 +71,7 @@ public class SelectionFragment extends Fragment {
         final View view = dview;
 
         final Context context = getActivity();
-        Button confirmation = (Button) view.findViewById(R.id.selection);
+        ImageButton confirmation = (ImageButton) view.findViewById(R.id.selection);
 
         final RelativeLayout confirmation_l = (RelativeLayout) view.findViewById(R.id.confirmation);
 
@@ -200,7 +203,7 @@ public class SelectionFragment extends Fragment {
             JSONArray jsonArray = null;
 
             try {
-                jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/Selection");
+                jsonArray = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/Selection", "GET");
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -299,7 +302,7 @@ public class SelectionFragment extends Fragment {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
             runCheck(finalTableRowData, token, class_c);
-            ((TextView) finalTableRowData.findViewById(R.id.cupo)).setText(integer + "");
+            ((TextView) finalTableRowData.findViewById(R.id.cupo)).setText(String.valueOf(integer));
         }
     }
 
@@ -358,7 +361,7 @@ public class SelectionFragment extends Fragment {
             String query = "http://angularjsauthentication20161012.azurewebsites.net/api/Selection?signatureId="+id;
 
             try {
-                jsonObject = new TokenRequester(token).getObject(query);
+                jsonObject = new TokenRequester(token).getJSONObject(query);
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -384,6 +387,7 @@ public class SelectionFragment extends Fragment {
             TableRow tableRowDataH = (TableRow) inflater.inflate(R.layout.layout_title_sheet_1, null);
             layout.addView(tableRowDataH);
 
+            assert signatureClasses != null;
             for (final ClassRoom class_c : signatureClasses.getClasses()) {
                 TableRow tableRowData = (TableRow) inflater.inflate(R.layout.layout_title_sheet_2, null);
                 ((TextView) tableRowData.findViewById(R.id.tipo)).setText(class_c.getType());
@@ -396,7 +400,7 @@ public class SelectionFragment extends Fragment {
                 ((TextView) tableRowData.findViewById(R.id.jue)).setText(ClassRoom.fixedTime(class_c.getThu()));
                 ((TextView) tableRowData.findViewById(R.id.vie)).setText(ClassRoom.fixedTime(class_c.getFri()));
                 ((TextView) tableRowData.findViewById(R.id.sab)).setText(ClassRoom.fixedTime(class_c.getSat()));
-                ((TextView) tableRowData.findViewById(R.id.cupo)).setText(class_c.getSpace() + "");
+                ((TextView) tableRowData.findViewById(R.id.cupo)).setText(String.valueOf(class_c.getSpace()));
 
                 final CheckBox checkBox = (CheckBox) tableRowData.findViewById(R.id.selection);
 
@@ -472,10 +476,10 @@ public class SelectionFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+            @SuppressWarnings("ConstantConditions")
             ExpandableListView expandableList = (ExpandableListView) getView().findViewById(R.id.expandable_list_view);
             ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(listDataHeader, listDataChild, activity, tableLayout, bottomSheet);
             expandableList.setAdapter(expandableListAdapter);
-
         }
 
         private String[] getHeaders_Area(List<Signature> signatures){

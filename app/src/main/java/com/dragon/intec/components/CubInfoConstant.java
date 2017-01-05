@@ -10,8 +10,10 @@ import com.dragon.intec.R;
 
 public class CubInfoConstant {
 
+    //Constant info about the cubicle reserving fragment.
+
     public static String location(int identifier, Context context) {
-        String returner = "";
+        String returner;
 
         if (identifier < 5)
             returner = context.getResources().getString(R.string.location_1);

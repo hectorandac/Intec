@@ -160,7 +160,7 @@ public class ClassRoom {
         return id_code_1;
     }
 
-    public void setId_code_1(String id_code_1) {
+    private void setId_code_1(String id_code_1) {
         this.id_code_1 = id_code_1;
     }
 
@@ -168,7 +168,7 @@ public class ClassRoom {
         return id_code_2;
     }
 
-    public void setId_code_2(String id_code_2) {
+    private void setId_code_2(String id_code_2) {
         this.id_code_2 = id_code_2;
     }
 
@@ -225,7 +225,7 @@ public class ClassRoom {
 
         ArrayList<ClassRoom> classrooms = new ArrayList<>();
 
-        JSONArray jsonClassrooms = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/classes?id=" + id);
+        JSONArray jsonClassrooms = new TokenRequester(token).getArray("http://angularjsauthentication20161012.azurewebsites.net/api/classes?id=" + id, "GET");
         for(int i = 0; i < jsonClassrooms.length(); i++){
             JSONObject classroom = jsonClassrooms.getJSONObject(i);
             ClassRoom myClassroom = new ClassRoom();
@@ -254,6 +254,7 @@ public class ClassRoom {
         ClassRoom myClassroom = new ClassRoom();
 
         myClassroom.setId(classroom.optString("id"));
+        myClassroom.setName(classroom.optString("name"));
         myClassroom.setType(classroom.optString("type"));
         myClassroom.setCode(classroom.optString("code"));
         myClassroom.setSec(classroom.optString("section"));

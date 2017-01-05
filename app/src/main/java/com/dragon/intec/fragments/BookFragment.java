@@ -30,14 +30,9 @@ import com.dragon.intec.objects.PartialStudent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 
 public class BookFragment extends Fragment {
@@ -333,7 +328,7 @@ public class BookFragment extends Fragment {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
 
-            FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.action_button_book_fragment);;
+            FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.action_button_book_fragment);
 
             if (aBoolean && !aBooleanFlag){
 
@@ -457,7 +452,7 @@ public class BookFragment extends Fragment {
             String token = sharedPref.getString(keyToken, "");
 
             try {
-                new TokenRequester(token).cancelCubicleRequest("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle/cancel", jsonObject);
+                new TokenRequester(token).postJSONObject("http://angularjsauthentication20161012.azurewebsites.net/api/cubicle/cancel", jsonObject);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -499,7 +494,7 @@ public class BookFragment extends Fragment {
 
         int viewPosition = parent.indexOfChild(v);
 
-        if(parent.getChildAt(viewPosition + 1) == null || !((ToggleButton) parent.getChildAt(viewPosition + 1)).isEnabled()){
+        if(parent.getChildAt(viewPosition + 1) == null || !(parent.getChildAt(viewPosition + 1)).isEnabled()){
             selectableFail.setEnabled(false);
             ((RadioButton)selectableAlternately).setChecked(true);
         }else{

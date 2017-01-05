@@ -32,12 +32,12 @@ public class ExpandableListPrograms extends BaseExpandableListAdapter {
 
     private Activity _activity;
     private List<String> _listDataHeader;
-    private HashMap<String, List<ProgramPensum.PensumSignature>> _listDataChild;
+    private HashMap<String, List<ProgramPensum.PensSignature>> _listDataChild;
     private boolean call = true;
 
     public  ExpandableListPrograms(Activity activity,
                                         List<String> listDataHeader,
-                                        HashMap<String, List<ProgramPensum.PensumSignature>> listDataChild)
+                                        HashMap<String, List<ProgramPensum.PensSignature>> listDataChild)
     {
         this._activity = activity;
         this._listDataHeader = listDataHeader;
@@ -99,7 +99,7 @@ public class ExpandableListPrograms extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         if(childPosition > 0) {
-            final ProgramPensum.PensumSignature signature = (ProgramPensum.PensumSignature) getChild(groupPosition, childPosition);
+            final ProgramPensum.PensSignature signature = (ProgramPensum.PensSignature) getChild(groupPosition, childPosition);
 
             LayoutInflater layoutInflater = (LayoutInflater) this._activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.expandable_list_child_program, null);
