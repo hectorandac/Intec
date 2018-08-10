@@ -1,4 +1,4 @@
-# Aplicación Intec
+# Aplicación Intec (Abandonado)
 
 Interfaz para dispositovs android de la pagina de procesos de intec. La ultima version incluye el fragmento de apartar cubiculos. La aplicación permite al estudiante:
 
